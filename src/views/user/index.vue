@@ -120,7 +120,7 @@
     <n-card>
       <n-pagination
         v-model:page="page"
-        v-model:page-size="pageSize"
+        v-model:page-size="perPage"
         :item-count="itemCount"
         :page-sizes="pageSizes"
         size="small"
@@ -184,7 +184,7 @@ const selectedId = ref();
 const { hasPermission } = usePermission();
 
 // fetch all records
-const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
+const { getList, list, page, pageSizes, itemCount, perPage, searchParams }: any =
   usePagination('/user');
 
 onMounted(() => {

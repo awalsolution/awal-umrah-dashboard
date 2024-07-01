@@ -1,6 +1,6 @@
 <template>
   <n-space :vertical="true">
-    <n-card title="Tenant List">
+    <n-card title="Organization List">
       <template #header-extra>
         <NButton
           secondary
@@ -9,7 +9,7 @@
           @click="router.push('add')"
           v-permission="{ action: ['tenant create'] }"
         >
-          Add Tenant
+          Add Organization
         </NButton>
       </template>
       <div class="flex flex-col gap-2 lg:flex-row w-full">
@@ -72,14 +72,26 @@
                   type="info"
                   @click="
                     router.push({
-                      name: 'tenant_view',
-                      params: { db: item.db_name }
+                      name: 'organization_details',
+                      params: { db_name: item.db_name }
                     })
                   "
                 >
                   Details
                 </n-button>
-                <n-button strong secondary type="warning"> Edit </n-button>
+                <n-button
+                  strong
+                  secondary
+                  type="warning"
+                  @click="
+                    router.push({
+                      name: 'organization_edit',
+                      params: { id: item.id }
+                    })
+                  "
+                >
+                  Edit
+                </n-button>
                 <n-button strong secondary type="error"> Delete </n-button>
               </td>
             </tr>
@@ -97,54 +109,20 @@
         :show-quick-jumper="true"
         :show-size-picker="true"
       >
-        <template #prefix="{ itemCount }"> Total Tenant: {{ itemCount }} </template>
+        <template #prefix="{ itemCount }"> Total Organization: {{ itemCount }} </template>
       </n-pagination>
     </n-card>
-
-    <n-modal style="width: 40%" v-model:show="showModal" preset="dialog">
-      <template #header>
-        <div>Create New Tenant</div>
-      </template>
-      <n-space :vertical="true">
-        <add-tenant
-          @created="
-            getList();
-            showModal = false;
-          "
-        />
-      </n-space>
-    </n-modal>
-
-    <n-modal style="width: 40%" v-model:show="showEditModal" preset="dialog">
-      <template #header>
-        <div>Update Tenant</div>
-      </template>
-      <n-space :vertical="true">
-        <edit-tenant
-          :id="selectedId"
-          @updated="
-            getList();
-            showEditModal = false;
-          "
-        />
-      </n-space>
-    </n-modal>
   </n-space>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { NIcon, NPagination } from 'naive-ui';
 import { SearchOutlined } from '@vicons/antd';
 import { usePagination } from '@src/hooks/pagination/usePagination';
-import AddTenant from '@src/components/tenant/AddTenant.vue';
-import EditTenant from '@src/components/tenant/EditTenant.vue';
 
 const router = useRouter();
-const showModal = ref(false);
-const showEditModal = ref(false);
-const selectedId = ref();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =

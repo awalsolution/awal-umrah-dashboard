@@ -21,7 +21,7 @@ export const verifyDomainNameApi = async (domain: string) => {
   } catch (error: any) {
     const { response } = error;
     const { data, status } = response || {};
-    if (status === 404) {
+    if (status === 404 || status === 400) {
       window['$message'].error(data.message, {
         closable: true,
         duration: 9000

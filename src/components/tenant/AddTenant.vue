@@ -1,78 +1,116 @@
 <template>
   <div>
-    <n-card title="Add New Tenant">
+    <n-card title="Add New Organization">
       <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
-        <n-row :gutter="[20, 8]">
-          <n-col :span="12">
-            <n-form-item label="Plan Price" path="plan_id">
-              <n-select
-                :filterable="true"
-                :tag="false"
-                placeholder="Select Plan"
-                v-model:value="formValue.plan_id"
-                clearable
-                @focus="getPlansOnFocus"
-                :remote="true"
-                :clear-filter-after-select="false"
-                label-field="name"
-                value-field="id"
-                :loading="planLoading"
-                :options="plans"
-              />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
-            <n-form-item label="Domain Name" path="domain_name">
-              <n-input v-model:value="formValue.domain_name" placeholder="Enter Domain Name" />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
-            <n-form-item label="First Name" path="first_name">
-              <n-input v-model:value="formValue.first_name" placeholder="Enter First Name" />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
-            <n-form-item label="Last Name" path="last_name">
-              <n-input v-model:value="formValue.last_name" placeholder="Enter Last Name" />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
-            <n-form-item label="Email" path="email">
-              <n-input v-model:value="formValue.email" placeholder="Enter Email" type="email" />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
-            <n-form-item label="Phone Number" path="phone_number">
-              <n-input v-model:value="formValue.phone_number" placeholder="Enter Phone Number" />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
-            <n-form-item label="Password" path="password">
-              <n-input
-                v-model:value="formValue.password"
-                placeholder="Enter Password"
-                type="password"
-                showPasswordOn="click"
-              />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
-            <n-form-item label="Password Confirm" path="password_confirmation">
-              <n-input
-                v-model:value="formValue.password_confirmation"
-                placeholder="Enter Password"
-                type="password"
-                showPasswordOn="click"
-              />
-            </n-form-item>
-          </n-col>
-          <n-col :span="12">
-            <n-form-item label="status" path="status">
-              <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
-            </n-form-item>
-          </n-col>
+        <n-row :gutter="20">
           <n-space :verical="true" item-class="w-full">
-            <n-card title="Roles">
+            <n-card title="Organization Info">
+              <n-col :span="8">
+                <n-form-item label="Plan Price" path="plan_id">
+                  <n-select
+                    :filterable="true"
+                    :tag="false"
+                    placeholder="Select Plan"
+                    v-model:value="formValue.plan_id"
+                    clearable
+                    @focus="getPlansOnFocus"
+                    :remote="true"
+                    :clear-filter-after-select="false"
+                    label-field="name"
+                    value-field="id"
+                    :loading="planLoading"
+                    :options="plans"
+                  />
+                </n-form-item>
+              </n-col>
+              <n-col :span="8">
+                <n-form-item label="Organization Name" path="tenant_name">
+                  <n-input v-model:value="formValue.tenant_name" placeholder="Enter  Name" />
+                </n-form-item>
+              </n-col>
+              <n-col :span="8">
+                <n-form-item label="Domain Name" path="domain_name">
+                  <n-input v-model:value="formValue.domain_name" placeholder="Enter Domain Name" />
+                </n-form-item>
+              </n-col>
+              <n-col :span="8">
+                <n-form-item label="status" path="status">
+                  <n-switch
+                    v-model:value="formValue.status"
+                    :checked-value="1"
+                    :unchecked-value="0"
+                  />
+                </n-form-item>
+              </n-col>
+            </n-card>
+
+            <n-card title="Organization Admin User Info">
+              <n-col :span="8">
+                <n-form-item label="Email" path="email">
+                  <n-input v-model:value="formValue.email" placeholder="Enter Email" type="email" />
+                </n-form-item>
+              </n-col>
+              <n-col :span="8">
+                <n-form-item label="Password" path="password">
+                  <n-input
+                    v-model:value="formValue.password"
+                    placeholder="Enter Password"
+                    type="password"
+                    showPasswordOn="click"
+                  />
+                </n-form-item>
+              </n-col>
+              <n-col :span="8">
+                <n-form-item label="Password Confirm" path="password_confirmation">
+                  <n-input
+                    v-model:value="formValue.password_confirmation"
+                    placeholder="Enter Password"
+                    type="password"
+                    showPasswordOn="click"
+                  />
+                </n-form-item>
+              </n-col>
+              <n-col :span="8">
+                <n-form-item label="First Name" path="first_name">
+                  <n-input v-model:value="formValue.first_name" placeholder="Enter First Name" />
+                </n-form-item>
+              </n-col>
+              <n-col :span="8">
+                <n-form-item label="Last Name" path="last_name">
+                  <n-input v-model:value="formValue.last_name" placeholder="Enter Last Name" />
+                </n-form-item>
+              </n-col>
+              <n-col :span="8">
+                <n-form-item label="Phone Number" path="phone_number">
+                  <n-input
+                    v-model:value="formValue.phone_number"
+                    placeholder="Enter Phone Number"
+                  />
+                </n-form-item>
+              </n-col>
+              <n-col :span="8">
+                <n-form-item label="Address" path="address">
+                  <n-input v-model:value="formValue.address" placeholder="Enter Address" />
+                </n-form-item>
+              </n-col>
+              <n-col :span="8">
+                <n-form-item label="City" path="city">
+                  <n-input v-model:value="formValue.city" placeholder="Enter city" />
+                </n-form-item>
+              </n-col>
+              <n-col :span="8">
+                <n-form-item label="State" path="state">
+                  <n-input v-model:value="formValue.state" placeholder="Enter State" />
+                </n-form-item>
+              </n-col>
+              <n-col :span="8">
+                <n-form-item label="Country" path="country">
+                  <n-input v-model:value="formValue.country" placeholder="Enter Country" />
+                </n-form-item>
+              </n-col>
+            </n-card>
+
+            <n-card title="Insert Organization Roles">
               <n-checkbox-group v-model:value="formValue.roles">
                 <n-row>
                   <n-col v-for="role of roles" :key="role.id" :span="6">
@@ -82,7 +120,7 @@
               </n-checkbox-group>
             </n-card>
 
-            <n-card title="Permissions">
+            <n-card title="Insert Organization Permissions">
               <n-checkbox-group class="mx-2" v-model:value="formValue.permissions">
                 <n-row>
                   <n-col v-for="permission of permissions" :key="permission.id" :span="6">
@@ -131,14 +169,12 @@ const formValue: Ref = ref({
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
-    console.log('after ssss', formValue);
     if (!errors) {
       createRecordApi('/tenant', formValue.value).then((res: any) => {
         window['$message'].success(res.message);
         router.push({
-          name: 'tenant_list'
+          name: 'organization_list'
         });
-        // emits('created', res.data);
       });
     } else {
       console.log(errors);

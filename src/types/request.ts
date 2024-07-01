@@ -6,11 +6,11 @@ export interface Response {
 }
 
 export interface BaseResponse<T = any> extends Response {
-  result: T;
+  data: T;
 }
 
 export interface PageResponse<T = any> extends Response {
-  result: T;
+  data: T;
   pageCount: number;
   pageSize: number;
   total: number;

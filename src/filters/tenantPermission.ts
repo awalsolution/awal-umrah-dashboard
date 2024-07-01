@@ -3,43 +3,46 @@ import { getRecordsApi } from '@src/api/endpoints';
 import { isEmpty } from 'lodash';
 
 export function useTenantPermissionfilter() {
-  const permissions: any = ref([]);
-  const permissionLoading = ref(false);
+  const tenantPermissions: any = ref([]);
+  const tenantpermissionLoading = ref(false);
   const permissionsInitialized = ref(false);
 
-  async function findPermission(query: any) {
+  async function findTenantPermission(query: any, db_name: any) {
     if (isEmpty(query)) {
-      permissions.value = [];
+      tenantPermissions.value = [];
     } else {
-      permissionLoading.value = true;
-      const response: any = await getRecordsApi('/permission', {
-        name: query
+      tenantpermissionLoading.value = true;
+      const response: any = await getRecordsApi('/tenant/find-permissions-of-tenant', {
+        name: query,
+        db_name: db_name
       });
-      permissions.value = response.data;
-      permissionLoading.value = false;
+      tenantPermissions.value = response.data;
+      tenantpermissionLoading.value = false;
     }
   }
 
-  async function getPermissions() {
-    permissionLoading.value = true;
-    const response: any = await getRecordsApi('/permission');
-    permissions.value = response.data;
-    permissionLoading.value = false;
+  async function getTenantPermissions(db_name: any) {
+    tenantpermissionLoading.value = true;
+    const response: any = await getRecordsApi('/tenant/find-permissions-of-tenant', {
+      db_name: db_name
+    });
+    tenantPermissions.value = response.data;
+    tenantpermissionLoading.value = false;
   }
 
-  async function getPermissionsOnFocus() {
+  async function getTenantPermissionsOnFocus(db_name: any) {
     if (!permissionsInitialized.value) {
-      await getPermissions();
+      await getTenantPermissions(db_name);
       permissionsInitialized.value = true;
     }
   }
 
   return {
-    permissions,
-    permissionLoading,
+    tenantPermissions,
+    tenantpermissionLoading,
     permissionsInitialized,
-    findPermission,
-    getPermissions,
-    getPermissionsOnFocus
+    findTenantPermission,
+    getTenantPermissions,
+    getTenantPermissionsOnFocus
   };
 }

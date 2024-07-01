@@ -1,7 +1,7 @@
 <template>
   <div class="mb-5">
     <n-space :vertical="true">
-      <n-card title="Assign permission to admin role">
+      <n-card title="Assign permission to organization role">
         <template #header-extra>
           <NButton secondary type="info" size="medium" @click="handleAssignPermissions">
             Assign Permission
@@ -33,8 +33,8 @@ const permissions: Ref = ref([]);
 const selectedPermissions: Ref = ref([]);
 
 onMounted(() => {
-  if (route.params && (route.params.role_id || route.params.db)) {
-    getRecordsApi(`/tenant/all-permission/${route.params.db}`, {
+  if (route.params && (route.params.role_id || route.params.db_name)) {
+    getRecordsApi(`/tenant/all-permission/${route.params.db_name}`, {
       role_id: route.params.role_id
     }).then((res: any) => {
       permissions.value = res.data?.permissions;
@@ -49,10 +49,13 @@ onMounted(() => {
 
 const handleAssignPermissions = () => {
   updateRecordApi(`/tenant/assign-permission/${route.params.role_id}`, {
-    db_name: route.params.db,
+    db_name: route.params.db_name,
     permissions: selectedPermissions.value
   }).then((res: any) => {
     window['$message'].success(res.message);
+    router.push({
+      name: 'organization_details'
+    });
   });
 };
 </script>

@@ -22,8 +22,29 @@
         </NCard>
       </n-grid-item>
     </n-grid>
-    <div class="flex gap-2 mt-2">
+    <div class="flex justify-center py-3">
+      <div
+        class="text-white text-2xl p-3 rounded bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% font-bold"
+      >
+        Organization Details Information
+      </div>
+    </div>
+    <n-space :vertical="true">
       <n-card title="Role list">
+        <template #header-extra>
+          <button
+            type="button"
+            class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2 text-center"
+            @click="
+              router.push({
+                name: 'organization_insert_role',
+                params: { db_name: route.params.db_name }
+              })
+            "
+          >
+            Insert Role
+          </button>
+        </template>
         <div class="table_content_container">
           <table class="table">
             <thead class="head">
@@ -51,22 +72,85 @@
                     action: ['tenant update', 'tenant delete']
                   }"
                 >
-                  <n-button
-                    strong
-                    secondary
-                    type="warning"
+                  <button
+                    type="button"
+                    class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded text-sm px-5 py-2 text-center"
                     @click="
                       router.push({
-                        name: 'tenant_edit_role',
-                        params: { db: route.params.db, role_id: item.id }
+                        name: 'organization_edit_role',
+                        params: { db_name: route.params.db_name, role_id: item.id }
                       })
                     "
                   >
                     Edit
-                  </n-button>
-                  <n-button strong secondary type="error" @click="roleConfirmationDialog(item)">
+                  </button>
+                  <button
+                    type="button"
+                    class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l font-medium rounded text-sm px-5 py-2 text-center"
+                    @click="roleConfirmationDialog(item)"
+                  >
                     Delete
-                  </n-button>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </n-card>
+      <n-card title="User list">
+        <div class="table_content_container">
+          <table class="table">
+            <thead class="head">
+              <tr>
+                <th class="th">Name</th>
+                <th class="th">Email</th>
+                <th class="th">Phone Number</th>
+                <th class="th">Role</th>
+                <th class="th">Status</th>
+                <th
+                  class="th text-center"
+                  v-permission="{
+                    action: ['tenant update', 'tenant delete']
+                  }"
+                >
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="users.length === 0">
+                <td colspan="6" class="data_placeholder">Record Not Exist</td>
+              </tr>
+              <tr v-else v-for="item in users" :key="item.id" class="body_tr">
+                <td v-if="item.profile" class="td">
+                  {{ item.profile.first_name + ' ' + item.profile.last_name }}
+                </td>
+                <td v-if="item.email" class="td">{{ item.email }}</td>
+                <td v-if="item.profile" class="td">{{ item.profile.phone_number }}</td>
+                <td class="td" v-for="role in item.roles" :key="role.id">{{ role.name }}</td>
+                <td class="td text-center">
+                  <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
+                    {{ item.status === 1 ? 'Active' : 'Disable' }}
+                  </n-tag>
+                </td>
+                <td
+                  class="td flex gap-3 justify-center"
+                  v-permission="{
+                    action: ['tenant update', 'tenant delete']
+                  }"
+                >
+                  <button
+                    type="button"
+                    class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded text-sm px-5 py-2 text-center"
+                    @click="
+                      router.push({
+                        name: 'organization_edit_user',
+                        params: { db_name: route.params.db_name, user_id: item.id }
+                      })
+                    "
+                  >
+                    Edit
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -74,6 +158,20 @@
         </div>
       </n-card>
       <n-card title="Permission list">
+        <template #header-extra>
+          <button
+            type="button"
+            class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2 text-center"
+            @click="
+              router.push({
+                name: 'organization_insert_permission',
+                params: { db_name: route.params.db_name }
+              })
+            "
+          >
+            Insert Permissions
+          </button>
+        </template>
         <div class="table_content_container">
           <table class="table">
             <thead class="head">
@@ -101,57 +199,20 @@
                     action: ['tenant update', 'tenant delete']
                   }"
                 >
-                  <n-button strong secondary type="warning"> Edit </n-button>
-                  <n-button strong secondary type="error"> Delete </n-button>
+                  <button
+                    type="button"
+                    class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l font-medium rounded text-sm px-5 py-2 text-center"
+                    @click="permissionConfirmationDialog(item)"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </n-card>
-      <n-card title="User list">
-        <div class="table_content_container">
-          <table class="table">
-            <thead class="head">
-              <tr>
-                <th class="th">Email</th>
-                <th class="th">Status</th>
-                <th
-                  class="th text-center"
-                  v-permission="{
-                    action: ['tenant update', 'tenant delete']
-                  }"
-                >
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-if="users.length === 0">
-                <td colspan="6" class="data_placeholder">Record Not Exist</td>
-              </tr>
-              <tr v-else v-for="item in users" :key="item.id" class="body_tr">
-                <td v-if="item.email" class="td">{{ item.email }}</td>
-                <td class="td text-center">
-                  <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
-                    {{ item.status === 1 ? 'Active' : 'Disable' }}
-                  </n-tag>
-                </td>
-                <td
-                  class="td flex gap-3 justify-center"
-                  v-permission="{
-                    action: ['tenant update', 'tenant delete']
-                  }"
-                >
-                  <n-button strong secondary type="warning"> Edit </n-button>
-                  <n-button strong secondary type="error"> Delete </n-button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </n-card>
-    </div>
+    </n-space>
   </div>
 </template>
 
@@ -174,11 +235,13 @@ const selectedId: Ref = ref();
 const loading: Ref = ref(true);
 
 const getList = () => {
-  getRecordApi('/tenant/detail', { db_name: route.params.db }).then((res: any) => {
-    permissions.value = res.data?.permissions;
-    users.value = res.data?.users;
-    roles.value = res.data?.roles;
-  });
+  getRecordApi('/tenant/find-single-tenant-details', { db_name: route.params.db_name }).then(
+    (res: any) => {
+      permissions.value = res.data?.permissions;
+      users.value = res.data?.users;
+      roles.value = res.data?.roles;
+    }
+  );
 };
 
 onMounted(() => {
@@ -193,12 +256,42 @@ function roleConfirmationDialog(item: { id: number }) {
     content: () => 'Are you sure you want to delete?',
     positiveText: 'Delete',
     negativeText: 'Cancel',
-    onPositiveClick: deleteOperation
+    onPositiveClick: deleteTenantRoleOperation
   });
 }
 
-function deleteOperation() {
-  deleteRecordApi(`/tenant/delete-role/${selectedId.value}`, { db_name: route.params.db })
+function deleteTenantRoleOperation() {
+  deleteRecordApi(`/tenant/delete-role-of-tenant`, {
+    role_id: selectedId.value,
+    db_name: route.params.db_name
+  })
+    .then((res: any) => {
+      window['$message'].success(res.message);
+      getList();
+      dialog.destroyAll;
+    })
+    .catch((res: any) => {
+      window['$message'].error(res.message);
+      dialog.destroyAll;
+    });
+  selectedId.value = null;
+}
+
+function permissionConfirmationDialog(item: { id: number }) {
+  selectedId.value = item.id;
+  dialog.error({
+    title: 'Confirmation',
+    content: () => 'Are you sure you want to delete?',
+    positiveText: 'Delete',
+    negativeText: 'Cancel',
+    onPositiveClick: deleteTenantPermissionOperation
+  });
+}
+
+function deleteTenantPermissionOperation() {
+  deleteRecordApi(`/tenant/delete-permission-of-tenant/${selectedId.value}`, {
+    db_name: route.params.db_name
+  })
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();

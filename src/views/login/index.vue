@@ -67,16 +67,22 @@ const isHost = window.location.hostname;
 const tenantApiKey = storage.getTenantApiKey(TENANT_API_KEY);
 
 const formData = reactive({
-  email: 't1@gmail.com',
-  password: '123'
+  email: 'iqbal@gmail.com',
+  password: '123456'
 });
 
 const redirectUrl = computed(() => route.query.redirect as string);
 
 console.log('tenant api key ==>', tenantApiKey);
+
 const isLoginButtonDisabled = () => {
-  loginButton.value = !(window.location.hostname === centralDomain || (storage.getTenantApiKey(TENANT_API_KEY) !== 'null' && storage.getTenantApiKey(TENANT_API_KEY) !== null));
-};``
+  loginButton.value = !(
+    window.location.hostname === centralDomain ||
+    (storage.getTenantApiKey(TENANT_API_KEY) !== 'null' &&
+      storage.getTenantApiKey(TENANT_API_KEY) !== null)
+  );
+};
+``;
 
 const handleSubmit = async () => {
   try {

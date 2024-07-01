@@ -24,6 +24,9 @@ export function usePagination(endpoint: any) {
     });
   };
   watch([page, perPage], (value, oldValue) => {
+    console.log('page ==>', page);
+    console.log('perPage ==>', perPage);
+    console.log('pageSizes ==>', pageSizes);
     page.value = value[1] !== oldValue[1] ? 1 : page.value;
     getList();
   });

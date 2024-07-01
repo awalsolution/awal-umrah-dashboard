@@ -38,15 +38,7 @@
           </n-form-item>
         </n-col>
         <n-col :span="24">
-          <SingleImageUploader
-            :action="uploadUrl"
-            :data="{ type: 0 }"
-            name="profile_image"
-            :width="100"
-            :height="100"
-            @upload-change="uploadChange"
-            v-model:value="profileData.profile_picture"
-          />
+          <ImageUploader v-model:value="profileData.profile_picture" />
         </n-col>
       </n-row>
     </n-card>
@@ -59,24 +51,18 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, unref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { updateRecordApi } from '@src/api/endpoints';
-import { SingleImageUploader } from '@src/components/common/upload';
+import { ImageUploader } from '@src/components/common/upload';
 import { useUserStore } from '@src/store/modules/user';
-import { useEnv } from '@src/hooks/useEnv';
 import { formRules } from '@src/rules/profile';
 
-const { uploadUrl } = useEnv();
 const formRef = ref<FormInst | null>(null);
 const profileData: any = ref({});
 const userStore = useUserStore();
 
 const emits = defineEmits(['updated']);
-
-const uploadChange = (list: string) => {
-  profileData.value.profile_picture = unref(list);
-};
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
