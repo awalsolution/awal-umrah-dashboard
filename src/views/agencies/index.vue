@@ -3,31 +3,31 @@
     <n-card title="Agencies List">
       <template #header-extra>
         <NButton
-            secondary
-            type="info"
-            size="small"
-            @click="showModal = true"
-            v-permission="{ action: ['agency create'] }"
+          secondary
+          type="info"
+          size="small"
+          @click="showModal = true"
+          v-permission="{ action: ['agency create'] }"
         >
           Add Agency
         </NButton>
       </template>
       <div class="flex flex-col gap-2 lg:flex-row w-full">
         <n-input
-            v-model:value="searchParams.name"
-            clearable
-            placeholder="Search by name"
-            size="small"
-            type="text"
+          v-model:value="searchParams.name"
+          clearable
+          placeholder="Search by name"
+          size="small"
+          type="text"
         >
           <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
         </n-input>
         <n-input
-            v-model:value="searchParams.email"
-            clearable
-            placeholder="Search by email"
-            size="small"
-            type="text"
+          v-model:value="searchParams.email"
+          clearable
+          placeholder="Search by email"
+          size="small"
+          type="text"
         >
           <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
         </n-input>
@@ -37,85 +37,77 @@
       <div class="table_content_container">
         <table class="table">
           <thead class="head">
-          <tr>
-            <th class="th">Name</th>
-            <th class="th">Logo</th>
-            <th class="th">Status</th>
-            <th class="th">Phone#</th>
-            <th class="th">Address</th>
-            <th class="th">Created At</th>
-            <th
+            <tr>
+              <th class="th">Name</th>
+              <th class="th">Logo</th>
+              <th class="th">Status</th>
+              <th class="th">Phone#</th>
+              <th class="th">Address</th>
+              <th class="th">Created At</th>
+              <th
                 class="sticky_el right-0 z-20"
                 v-permission="{
                   action: ['agency update', 'agency delete']
                 }"
-            >
-              Actions
-            </th>
-          </tr>
+              >
+                Actions
+              </th>
+            </tr>
           </thead>
           <tbody>
-          <tr v-if="list.length === 0">
-            <td colspan="9" class="data_placeholder">Record Not Exist</td>
-          </tr>
-          <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-            <td class="td">
-              {{ item?.agency_name }}
-            </td>
-            <td class="td text-center pt-2">
-              <n-avatar size="large" :src="`${imgUrl}${item?.profile?.profile_picture}`" />
-            </td>
-            <td class="td">
-              <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
-                {{ item.status === 1 ? 'Active' : 'Disable' }}
-              </n-tag>
-            </td>
-            <td class="td">{{ item?.phone }}</td>
-            <td class="td">
-              {{
-                item?.address +
-                ' ' +
-                item?.city +
-                ' ' +
-                item?.state +
-                ' ' +
-                item?.country
-              }}
-            </td>
-            <td class="td">{{ item.created_at }}</td>
-            <td
+            <tr v-if="list.length === 0">
+              <td colspan="9" class="data_placeholder">Record Not Exist</td>
+            </tr>
+            <tr v-else v-for="item in list" :key="item.id" class="body_tr">
+              <td class="td">
+                {{ item?.agency_name }}
+              </td>
+              <td class="td text-center pt-2">
+                <n-avatar size="large" :src="`${imgUrl}${item?.profile?.profile_picture}`" />
+              </td>
+              <td class="td">
+                <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
+                  {{ item.status === 1 ? 'Active' : 'Disable' }}
+                </n-tag>
+              </td>
+              <td class="td">{{ item?.phone }}</td>
+              <td class="td">
+                {{ item?.address + ' ' + item?.city + ' ' + item?.state + ' ' + item?.country }}
+              </td>
+              <td class="td">{{ item.created_at }}</td>
+              <td
                 class="sticky_el right-0 z-10"
                 v-permission="{
                   action: ['agency update', 'agency delete']
                 }"
-            >
-              <n-dropdown
+              >
+                <n-dropdown
                   @click="actionOperation(item)"
                   :onSelect="selectedAction"
                   trigger="click"
                   :options="filteredOptions"
-              >
-                <n-button size="small" :circle="true">
-                  <n-icon>
-                    <more-outlined />
-                  </n-icon>
-                </n-button>
-              </n-dropdown>
-            </td>
-          </tr>
+                >
+                  <n-button size="small" :circle="true">
+                    <n-icon>
+                      <more-outlined />
+                    </n-icon>
+                  </n-button>
+                </n-dropdown>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
     </n-card>
     <n-card>
       <n-pagination
-          v-model:page="page"
-          v-model:page-size="pageSize"
-          :item-count="itemCount"
-          :page-sizes="pageSizes"
-          size="small"
-          :show-quick-jumper="true"
-          :show-size-picker="true"
+        v-model:page="page"
+        v-model:page-size="pageSize"
+        :item-count="itemCount"
+        :page-sizes="pageSizes"
+        size="small"
+        :show-quick-jumper="true"
+        :show-size-picker="true"
       >
         <template #prefix="{ itemCount }"> Total Products: {{ itemCount }} </template>
       </n-pagination>
@@ -126,7 +118,7 @@
       </template>
       <n-space :vertical="true">
         <add-agency
-            @created="
+          @created="
             getList();
             showModal = false;
           "
@@ -140,8 +132,8 @@
       </template>
       <n-space :vertical="true">
         <edit-agency
-            :id="selectedId"
-            @updated="
+          :id="selectedId"
+          @updated="
             getList();
             showEditModal = false;
           "
@@ -153,7 +145,6 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, computed, type Ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
@@ -161,11 +152,10 @@ import { useEnv } from '@src/hooks/useEnv';
 import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
-import AddAgency from "@src/components/agency/AddAgency.vue";
-import EditAgency from "@src/components/agency/EditAgency.vue";
+import AddAgency from '@src/components/agency/AddAgency.vue';
+import EditAgency from '@src/components/agency/EditAgency.vue';
 
 const { imgUrl } = useEnv();
-const router = useRouter();
 const dialog = useDialog();
 const selectedOption: Ref = ref(null);
 const showModal = ref(false);
@@ -175,7 +165,7 @@ const { hasPermission } = usePermission();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-    usePagination('/agencies');
+  usePagination('/agencies');
 
 onMounted(() => {
   getList();
@@ -212,15 +202,15 @@ function confirmationDialog() {
 
 function deleteOperation() {
   deleteRecordApi(`/agencies/${selectedId.value}`)
-      .then((res: any) => {
-        window['$message'].success(res.message);
-        getList();
-        dialog.destroyAll;
-      })
-      .catch((res: any) => {
-        window['$message'].error(res.message);
-        dialog.destroyAll;
-      });
+    .then((res: any) => {
+      window['$message'].success(res.message);
+      getList();
+      dialog.destroyAll;
+    })
+    .catch((res: any) => {
+      window['$message'].error(res.message);
+      dialog.destroyAll;
+    });
   selectedId.value = null;
   selectedOption.value = null;
 }
