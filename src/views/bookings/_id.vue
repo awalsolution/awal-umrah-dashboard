@@ -202,7 +202,7 @@
                           </template>
                         </n-button>
                         <n-button
-                          v-if="hasPermission(['can view booking edit member'])"
+                          v-if="hasPermission(['booking edit member'])"
                           circle
                           secondary
                           strong
@@ -219,8 +219,7 @@
                     </n-row>
                     <n-button
                       v-if="
-                        member.hotelDetails.length < 3 &&
-                        hasPermission(['can view booking assign hotel'])
+                        member.hotelDetails.length < 3 && hasPermission(['booking assign hotel'])
                       "
                       round
                       secondary
@@ -231,10 +230,7 @@
                     </n-button>
                   </n-row>
                   <n-button
-                    v-if="
-                      hasPermission(['can view booking assign hotel']) &&
-                      !member.hotelDetails?.length
-                    "
+                    v-if="hasPermission(['booking assign hotel']) && !member.hotelDetails?.length"
                     round
                     secondary
                     type="info"
@@ -309,12 +305,12 @@ import {
   TextBulletListSquareEdit24Regular
 } from '@vicons/fluent';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
-import MemberHotelInfo from '@src/components/Booking/memberHotelInfo.vue';
+import MemberHotelInfo from '@src/components/booking/memberHotelInfo.vue';
 import AssignHotel from '@src/components/hotels/AssignHotel.vue';
-import addMember from '@src/components/Booking/addMember.vue';
-import MemberInfo from '@src/components/Booking/memberInfo.vue';
+import addMember from '@src/components/booking/addMember.vue';
+import MemberInfo from '@src/components/booking/memberInfo.vue';
 import { generalFormRules } from '@src/rules/booking';
-import BookingHotel from '@src/components/Booking/bookingHotel.vue';
+import BookingHotel from '@src/components/booking/bookingHotel.vue';
 import { usePermission } from '@src/hooks/permission/usePermission';
 
 const route: any = useRoute();
@@ -338,7 +334,7 @@ onMounted(async () => {
 
 async function getBookingData() {
   if (route.params.id) {
-    const res: any = await getRecordApi(`/bookings/${route.params.id}`);
+    const res: any = await getRecordApi(`/booking/${route.params.id}`);
     console.log('res ==>', res);
     if (res) {
       bookingGeneralDetails.value = {
@@ -363,7 +359,7 @@ async function getBookingData() {
 
 async function saveGeneralBooking() {
   loading.value = true;
-  const res: any = await updateRecordApi(`/bookings/${route.params.id}`, {
+  const res: any = await updateRecordApi(`/booking/${route.params.id}`, {
     ...bookingGeneralDetails.value,
     type: 'general'
   });

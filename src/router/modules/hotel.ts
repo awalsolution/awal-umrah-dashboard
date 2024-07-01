@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       title: 'Hotels',
       icon: renderIcon(CartOutline),
-      permissions: ['hotels menu'],
+      permissions: ['hotel menu'],
       sort: 3
     },
     children: [
@@ -23,7 +23,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_list`,
         meta: {
           title: 'Hotel List',
-          permissions: ['hotels list']
+          permissions: ['hotel menu']
         },
         component: () => import('@src/views/hotels/index.vue')
       },
@@ -52,7 +52,7 @@ const routes: Array<RouteRecordRaw> = [
         name: `${routeName}_room`,
         meta: {
           title: 'Rooms',
-          permissions: ['rooms menu']
+          permissions: ['room menu']
         },
         component: () => import('@src/views/rooms/index.vue')
       }

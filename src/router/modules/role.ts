@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
       title: 'Role',
       icon: renderIcon(PeopleLock20Regular),
       permissions: ['role menu'],
-      sort: 8
+      sort: 7
     },
     children: [
       {

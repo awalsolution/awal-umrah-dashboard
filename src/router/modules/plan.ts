@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
       title: 'Plan',
       icon: renderIcon(DollarCircleOutlined),
       permissions: ['plan menu'],
-      sort: 2
+      sort: 5
     },
     children: [
       {

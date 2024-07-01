@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
       title: 'Permission',
       icon: renderIcon(UnlockOutlined),
       permissions: ['permission menu'],
-      sort: 9
+      sort: 8
     },
     children: [
       {

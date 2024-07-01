@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
       title: 'Organization',
       icon: renderIcon(Organization16Regular),
       permissions: ['tenant menu'],
-      sort: 1
+      sort: 4
     },
     children: [
       {

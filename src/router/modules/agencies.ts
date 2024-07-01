@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
       title: 'Agencies',
       icon: renderIcon(PeopleCommunityAdd20Regular),
       permissions: ['agencies menu'],
-      sort: 7
+      sort: 1
     },
     children: [
       {
@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'Agencies List',
-          permissions: ['agencies menu']
+          permissions: ['agency menu']
         },
         component: () => import('@src/views/agencies/index.vue')
       }

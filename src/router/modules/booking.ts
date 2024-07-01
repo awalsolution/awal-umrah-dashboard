@@ -14,8 +14,8 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Bookings',
       icon: renderIcon(CartOutline),
-      permissions: ['bookings menu'],
-      sort: 4
+      permissions: ['booking menu'],
+      sort: 2
     },
     children: [
       {
@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
         name: `${routeName}_list`,
         meta: {
           title: 'Booking List',
-          permissions: ['bookings list']
+          permissions: ['booking menu']
         },
         component: () => import('@src/views/bookings/index.vue')
       },

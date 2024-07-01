@@ -39,7 +39,7 @@
               <th
                 class="sticky_el right-0 z-20"
                 v-permission="{
-                  action: ['can view hotel update', 'can view hotel delete']
+                  action: ['hotel update', 'hotel delete']
                 }"
               >
                 Actions
@@ -69,7 +69,7 @@
               <td
                 class="sticky_el right-0 z-10"
                 v-permission="{
-                  action: ['can view hotel update', 'can view hotel delete']
+                  action: ['hotel update', 'hotel delete']
                 }"
               >
                 <n-dropdown
@@ -164,13 +164,13 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['permission update'])
+    permission: hasPermission(['hotel update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['permission delete'])
+    permission: hasPermission(['hotel delete'])
   }
 ]);
 
