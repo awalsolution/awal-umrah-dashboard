@@ -1,12 +1,5 @@
 <template>
   <n-button v-print="'#printMe'" type="primary">Print</n-button>
-  <!--    <n-card title="Print Booking">-->
-  <!--      <n-row :gutter="10">-->
-  <!--        <n-col :span="8">First Company info</n-col>-->
-  <!--        <n-col :span="8">Second Company Info</n-col>-->
-  <!--        <n-col :span="8">Third Company Info</n-col>-->
-  <!--      </n-row>-->
-  <!--    </n-card>-->
   <div id="printMe">
     <n-table :bordered="false" :single-line="false">
       <thead>

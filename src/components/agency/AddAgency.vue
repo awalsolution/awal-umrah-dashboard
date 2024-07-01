@@ -2,8 +2,8 @@
   <n-form ref="formRef" :label-width="80" :model="formValue" :rules="formRules" size="small">
     <n-row :gutter="[20, 8]">
       <n-col :span="12">
-        <n-form-item label="Agency Name" path="name">
-          <n-input v-model:value="formValue.name" placeholder="Enter Name" />
+        <n-form-item label="Agency Name" path="agency_name">
+          <n-input v-model:value="formValue.agency_name" placeholder="Enter Name" />
         </n-form-item>
       </n-col>
       <n-col :span="12">
@@ -31,6 +31,11 @@
           <n-input v-model:value="formValue.country" placeholder="Enter Country" />
         </n-form-item>
       </n-col>
+      <n-col :span="12">
+        <n-form-item label="status" path="status">
+          <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
+        </n-form-item>
+      </n-col>
     </n-row>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
@@ -42,16 +47,14 @@
 
 <script lang="ts" setup>
 import { ref, type Ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { formRules } from '@src/rules/agency';
 
-const router = useRouter();
 const formRef = ref<FormInst | null>(null);
 const formValue: Ref = ref({});
 
-// const emits = defineEmits(['created']);
+const emits = defineEmits(['created']);
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
@@ -59,10 +62,7 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       createRecordApi('/agencies', formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        router.push({
-          name: 'agencies_list'
-        });
-        // emits('created', res.data);
+        emits('created');
       });
     } else {
       console.log(errors);

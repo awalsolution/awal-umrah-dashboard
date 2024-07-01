@@ -306,7 +306,7 @@ import {
 } from '@vicons/fluent';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import MemberHotelInfo from '@src/components/booking/memberHotelInfo.vue';
-import AssignHotel from '@src/components/hotels/AssignHotel.vue';
+import AssignHotel from '@src/components/hotel/AssignHotel.vue';
 import addMember from '@src/components/booking/addMember.vue';
 import MemberInfo from '@src/components/booking/memberInfo.vue';
 import { generalFormRules } from '@src/rules/booking';

@@ -25,7 +25,7 @@ const routes: Array<RouteRecordRaw> = [
           title: 'Hotel List',
           permissions: ['hotel menu']
         },
-        component: () => import('@src/views/hotels/index.vue')
+        component: () => import('@src/views/hotel/index.vue')
       },
       {
         path: 'add',
@@ -35,7 +35,7 @@ const routes: Array<RouteRecordRaw> = [
           permissions: ['hotel create'],
           hidden: true
         },
-        component: () => import('@src/components/hotels/AddHotel.vue')
+        component: () => import('@src/components/hotel/AddHotel.vue')
       },
       {
         path: 'update/:id',
@@ -45,16 +45,16 @@ const routes: Array<RouteRecordRaw> = [
           permissions: ['hotel update'],
           hidden: true
         },
-        component: () => import('@src/components/hotels/EditHotel.vue')
+        component: () => import('@src/components/hotel/EditHotel.vue')
       },
       {
         path: 'room',
         name: `${routeName}_room`,
         meta: {
-          title: 'Rooms',
+          title: 'Room List',
           permissions: ['room menu']
         },
-        component: () => import('@src/views/rooms/index.vue')
+        component: () => import('@src/views/room/index.vue')
       }
     ]
   }

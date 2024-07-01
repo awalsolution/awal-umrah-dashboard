@@ -1,6 +1,6 @@
 <template>
   <div>
-    <n-card title="Add New Organization">
+    <n-card title="Add New Booking">
       <n-form ref="formRef" :label-width="80" :model="formValue" :rules="rules" size="small">
         <n-row :gutter="[20, 8]">
           <n-col :span="8">

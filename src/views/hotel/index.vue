@@ -103,7 +103,7 @@
         <template #prefix="{ itemCount }"> Total Hotels: {{ itemCount }} </template>
       </n-pagination>
     </n-card>
-    <n-modal v-model:show="showModal" preset="dialog">
+    <n-modal style="width: 70%" v-model:show="showModal" preset="dialog">
       <template #header>
         <div>Create New Hotel</div>
       </template>
@@ -117,7 +117,7 @@
       </n-space>
     </n-modal>
 
-    <n-modal v-model:show="showEditModal" preset="dialog">
+    <n-modal style="width: 70%" v-model:show="showEditModal" preset="dialog">
       <template #header>
         <div>Update Hotel</div>
       </template>
@@ -141,8 +141,8 @@ import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vic
 import { deleteRecordApi } from '@src/api/endpoints';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
-import AddHotel from '@src/components/hotels/AddHotel.vue';
-import EditHotel from '@src/components/hotels/EditHotel.vue';
+import AddHotel from '@src/components/hotel/AddHotel.vue';
+import EditHotel from '@src/components/hotel/EditHotel.vue';
 import { renderIcon } from '@src/utils/renderIcon';
 
 const dialog = useDialog();

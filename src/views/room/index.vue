@@ -1,15 +1,15 @@
 <template>
   <n-space :vertical="true">
-    <n-card title="Role List">
+    <n-card title="Room List">
       <template #header-extra>
         <NButton
           secondary
           type="info"
           size="small"
           @click="showModal = true"
-          v-permission="{ action: ['booking create'] }"
+          v-permission="{ action: ['room create'] }"
         >
-          Add Booking
+          Add Room
         </NButton>
       </template>
       <div class="flex flex-col gap-2 lg:flex-row w-full">
@@ -28,18 +28,22 @@
         <table class="table">
           <thead class="head">
             <tr>
-              <th class="th">Booking No</th>
-              <th class="th">Customer Name</th>
+              <th class="th">Hotel Name</th>
+              <th class="th">Floor No</th>
+              <th class="th">Room No</th>
+              <th class="th">Room Type</th>
+              <th class="th">No of Beds</th>
+              <th class="th">Beds</th>
               <th class="th">Status</th>
-              <th class="th">Approval Date</th>
-              <th class="th">Expected Departure</th>
-              <th class="th">Group</th>
-              <th class="th">Group No</th>
+              <th class="th">Price Type</th>
+              <th class="th">Purchase Price</th>
+              <th class="th">Sale Price</th>
               <th class="th">Created At</th>
+              <th class="th">Updated At</th>
               <th
                 class="sticky_el right-0 z-20"
                 v-permission="{
-                  action: ['booking update', 'booking delete']
+                  action: ['room update', 'room delete']
                 }"
               >
                 Actions
@@ -48,21 +52,39 @@
           </thead>
           <tbody>
             <tr v-if="list.length === 0">
-              <td colspan="10" class="data_placeholder">Record Not Exist</td>
+              <td colspan="11" class="data_placeholder">Record Not Exist</td>
             </tr>
-            <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-              <td class="td">{{ item.id }}</td>
-              <td class="td">{{ item.customer_name }}</td>
-              <td class="td">{{ item.status }}</td>
-              <td class="td">{{ item.approval_date }}</td>
-              <td class="td">{{ item.expected_departure }}</td>
-              <td class="td">{{ item.group_name }}</td>
-              <td class="td">{{ item.group_no }}</td>
+            <tr v-else v-for="item in list" :key="item.id">
+              <td class="td">{{ item.hotels.name }}</td>
+              <td class="td">{{ item.floor_no }}</td>
+              <td class="td">{{ item.room_no }}</td>
+              <td class="td">{{ item.room_type }}</td>
+              <td class="td">{{ item.no_of_bed }}</td>
+              <td class="td">
+                <n-button
+                  size="small"
+                  secondary
+                  type="info"
+                  v-if="item.beds.length"
+                  @click="handleViewBeds(item)"
+                >
+                  View Beds
+                </n-button>
+              </td>
+              <td class="text-center td">
+                <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'success'">
+                  {{ item.status }}
+                </n-tag>
+              </td>
+              <td class="td">{{ item.price_type }}</td>
+              <td class="td">{{ item.purchase_price }}</td>
+              <td class="td">{{ item.sale_price }}</td>
               <td class="td">{{ item.created_at }}</td>
+              <td class="td">{{ item.updated_at }}</td>
               <td
                 class="sticky_el right-0 z-10"
                 v-permission="{
-                  action: ['booking update', 'booking delete']
+                  action: ['room update', 'room delete']
                 }"
               >
                 <n-dropdown
@@ -93,20 +115,44 @@
         :show-quick-jumper="true"
         :show-size-picker="true"
       >
-        <template #prefix="{ itemCount }"> Total Plans: {{ itemCount }} </template>
+        <template #prefix="{ itemCount }"> Total Permissions: {{ itemCount }} </template>
       </n-pagination>
     </n-card>
-    <n-modal style="width: 80%" v-model:show="showModal" preset="dialog">
+    <n-modal style="width: 60%" v-model:show="showModal" preset="dialog">
       <template #header>
-        <div>Create New Booking</div>
+        <div>Create New Room</div>
       </template>
       <n-space :vertical="true">
-        <add-booking
+        <add-room
           @created="
             getList();
             showModal = false;
           "
         />
+      </n-space>
+    </n-modal>
+
+    <n-modal style="width: 60%" v-model:show="showEditModal" preset="dialog">
+      <template #header>
+        <div>Update Room</div>
+      </template>
+      <n-space :vertical="true">
+        <edit-room
+          :id="selectedId"
+          @updated="
+            getList();
+            showEditModal = false;
+          "
+        />
+      </n-space>
+    </n-modal>
+
+    <n-modal style="width: 40%" v-model:show="showViewBedsModal" preset="dialog">
+      <template #header>
+        <div>View Beds</div>
+      </template>
+      <n-space :vertical="true">
+        <view-beds :bedsData="bedsData" />
       </n-space>
     </n-modal>
   </n-space>
@@ -117,21 +163,24 @@ import { ref, onMounted, computed, type Ref } from 'vue';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
 import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
-import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
-import AddBooking from '@src/components/booking/AddBooking.vue';
+import AddRoom from '@src/components/hotel/room/AddRoom.vue';
+import EditRoom from '@src/components/hotel/room/EditRoom.vue';
+import ViewBeds from '@src/components/hotel/room/ViewBeds.vue';
+import { renderIcon } from '@src/utils/renderIcon';
 
 const dialog = useDialog();
+const selectedId: Ref = ref();
 const selectedOption: Ref = ref(null);
 const showModal: Ref = ref(false);
 const showEditModal: Ref = ref(false);
-const selectedId: Ref = ref();
+const showViewBedsModal: Ref = ref(false);
+const bedsData = ref([]);
 const { hasPermission } = usePermission();
 
-// fetch all records
 const { getList, list, page, pageSizes, itemCount, perPage, searchParams }: any =
-  usePagination('/booking');
+  usePagination('/room');
 
 onMounted(() => {
   getList();
@@ -142,13 +191,13 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['booking update'])
+    permission: hasPermission(['room update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['booking delete'])
+    permission: hasPermission(['room delete'])
   }
 ]);
 
@@ -167,13 +216,13 @@ function confirmationDialog() {
 }
 
 function deleteOperation() {
-  deleteRecordApi(`/booking/${selectedId.value}`)
+  deleteRecordApi(`/room/${selectedId.value}`)
     .then((res: any) => {
-      window['$message'].warning(res.message);
+      window['$message'].success(res.message);
       getList();
       dialog.destroyAll;
     })
-    .catch((res: any) => {
+    .catch((res) => {
       window['$message'].error(res.message);
       dialog.destroyAll;
     });
@@ -185,12 +234,17 @@ const actionOperation = (item: any) => {
   if (selectedOption.value === 'edit') {
     showEditModal.value = true;
     selectedId.value = item.id;
-    // router.push(`/roles/${item.id}`);
   } else if (selectedOption.value === 'delete') {
     selectedId.value = item.id;
     confirmationDialog();
   }
 };
+
+const handleViewBeds = (item: any) => {
+  bedsData.value = item.beds;
+  showViewBedsModal.value = true;
+};
+
 const selectedAction = (key: any) => {
   selectedOption.value = key;
 };
@@ -210,13 +264,13 @@ const fetchList = () => {
   @apply sticky top-0 text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400 z-20;
 }
 .th {
-  @apply px-3 py-3 border-r border-b border-gray-200 dark:border-gray-800  whitespace-nowrap;
+  @apply px-3 py-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
 .body_tr {
   @apply hover:bg-gray-50 dark:hover:bg-gray-600;
 }
 .td {
-  @apply px-3 py-3 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
+  @apply px-3 py-1 border-r border-b border-gray-200 dark:border-gray-800 whitespace-nowrap;
 }
 .sticky_el {
   @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
