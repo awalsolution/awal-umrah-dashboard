@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Agencies',
       icon: renderIcon(PeopleCommunityAdd20Regular),
-      permissions: ['agencies menu'],
+      permissions: ['agency menu'],
       sort: 1
     },
     children: [

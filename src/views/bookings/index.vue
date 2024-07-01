@@ -131,7 +131,7 @@ const { hasPermission } = usePermission();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, perPage, searchParams }: any =
-  usePagination('/bookings');
+  usePagination('/booking');
 
 onMounted(() => {
   getList();
@@ -167,7 +167,7 @@ function confirmationDialog() {
 }
 
 function deleteOperation() {
-  deleteRecordApi(`/bookings/${selectedId.value}`)
+  deleteRecordApi(`/booking/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].warning(res.message);
       getList();

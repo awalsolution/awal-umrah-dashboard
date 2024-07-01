@@ -34,7 +34,7 @@ const routes: RouteRecordRaw[] = [
           title: 'Add booking',
           permissions: ['booking create']
         },
-        component: () => import('@src/views/bookings/addBooking.vue')
+        component: () => import('@src/components/booking/AddBooking.vue')
       },
       {
         path: 'update/:id',
@@ -44,7 +44,7 @@ const routes: RouteRecordRaw[] = [
           permissions: ['booking update'],
           hidden: true
         },
-        component: () => import('@src/views/bookings/_id.vue')
+        component: () => import('@src/components/booking/EditBooking.vue')
       },
       {
         path: 'print/:id',
@@ -54,7 +54,7 @@ const routes: RouteRecordRaw[] = [
           permissions: ['booking print'],
           hidden: true
         },
-        component: () => import('@src/views/bookings/printBooking.vue')
+        component: () => import('@src/components/booking/PrintBooking.vue')
       }
     ]
   }
