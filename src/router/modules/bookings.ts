@@ -1,7 +1,7 @@
-import type {RouteRecordRaw} from 'vue-router';
-import {CartOutline} from '@vicons/ionicons5';
-import {DashboardLayout} from '@src/router/constant';
-import {renderIcon} from '@src/utils/renderIcon';
+import type { RouteRecordRaw } from 'vue-router';
+import { CartOutline } from '@vicons/ionicons5';
+import { DashboardLayout } from '@src/router/constant';
+import { renderIcon } from '@src/utils/renderIcon';
 
 const routeName = 'booking';
 

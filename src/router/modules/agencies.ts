@@ -3,7 +3,7 @@ import { PeopleCommunityAdd20Regular } from '@vicons/fluent';
 import { DashboardLayout } from '@src/router/constant';
 import { renderIcon } from '@src/utils/renderIcon';
 
-const routeName = "agencies";
+const routeName = 'agencies';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
           permissions: ['agencies menu']
         },
         component: () => import('@src/views/agencies/index.vue')
-      },
+      }
     ]
   }
 ];
