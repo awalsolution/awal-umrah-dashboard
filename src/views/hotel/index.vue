@@ -51,14 +51,13 @@
               <td colspan="8" class="data_placeholder">Record Not Exist</td>
             </tr>
             <tr v-else v-for="item in list" :key="item.id">
-              <td class="sticky_el left-0 z-10">{{ item.id }}</td>
               <td class="td">{{ item.name }}</td>
               <td class="td">{{ item.phone_number }}</td>
               <td class="td">{{ item.owner }}</td>
               <td class="td">{{ item.owner_phone }}</td>
-              <td class="text-center td">
+              <td class="td">
                 <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
-                  {{ item.status }}
+                  {{ item.status === 1 ? 'Active' : 'Disable' }}
                 </n-tag>
               </td>
               <td class="td">

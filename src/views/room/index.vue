@@ -71,9 +71,9 @@
                   View Beds
                 </n-button>
               </td>
-              <td class="text-center td">
-                <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'success'">
-                  {{ item.status }}
+              <td class="td">
+                <n-tag :bordered="false" :type="item.status === 'disabled' ? 'error' : 'info'">
+                  {{ item.status === 1 ? 'Active' : 'Disable' }}
                 </n-tag>
               </td>
               <td class="td">{{ item.price_type }}</td>

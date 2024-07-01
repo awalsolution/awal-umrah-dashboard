@@ -83,7 +83,7 @@ const emits = defineEmits(['updated']);
 
 // fetch single hotel  using id
 getRecordApi(`/hotel/${props.id}`).then((res: any) => {
-  hotel.value = res.result;
+  hotel.value = res.data;
 });
 
 const handleValidateClick = (e: MouseEvent) => {
@@ -92,7 +92,7 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       updateRecordApi(`/hotel/${hotel.value.id}`, hotel.value).then((res: any) => {
         window['$message'].success(res.message);
-        emits('updated', res.result);
+        emits('updated', res.data);
       });
     } else {
       console.log(errors);

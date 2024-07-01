@@ -109,8 +109,8 @@ interface PrintData {
 const route = useRoute();
 const printData = ref<Partial<PrintData>>({});
 onMounted(async () => {
-  await getRecordApi('/bookings/' + route.params.id).then((res: any) => {
-    printData.value = res.result;
+  await getRecordApi('/booking/' + route.params.id).then((res: any) => {
+    printData.value = res.data;
   });
 });
 </script>

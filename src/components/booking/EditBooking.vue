@@ -338,20 +338,20 @@ async function getBookingData() {
     console.log('res ==>', res);
     if (res) {
       bookingGeneralDetails.value = {
-        customer_name: res.result.customer_name,
-        booking_status: res.result.status,
-        group_no: res.result.group_no,
-        group_name: res.result.group_name,
-        category: res.result.category,
-        arrival_date: res.result.arrival_date,
-        expected_departure: res.result.expected_departure,
-        confirmed_ticket: res.result.confirmed_ticket
+        customer_name: res.data.customer_name,
+        booking_status: res.data.status,
+        group_no: res.data.group_no,
+        group_name: res.data.group_name,
+        category: res.data.category,
+        arrival_date: res.data.arrival_date,
+        expected_departure: res.data.expected_departure,
+        confirmed_ticket: res.data.confirmed_ticket
       };
-      if (res.result.members) {
-        members.value = res.result.members;
+      if (res.data.members) {
+        members.value = res.data.members;
       }
-      if (res.result.bookingHotelDetails) {
-        bookingHotelDetails.value = res.result.bookingHotelDetails;
+      if (res.data.bookingHotelDetails) {
+        bookingHotelDetails.value = res.data.bookingHotelDetails;
       }
     }
   }
