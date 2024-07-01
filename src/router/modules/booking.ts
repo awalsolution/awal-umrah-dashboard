@@ -25,7 +25,7 @@ const routes: RouteRecordRaw[] = [
           title: 'Booking List',
           permissions: ['booking menu']
         },
-        component: () => import('@src/views/bookings/index.vue')
+        component: () => import('@src/views/booking/index.vue')
       },
       {
         path: 'add',
