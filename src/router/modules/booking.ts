@@ -37,10 +37,10 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@src/components/booking/AddBooking.vue')
       },
       {
-        path: 'update/:id',
-        name: `${routeName}_update`,
+        path: 'edit/:id',
+        name: `${routeName}_edit`,
         meta: {
-          title: 'Update booking',
+          title: 'Edit booking',
           permissions: ['booking update'],
           hidden: true
         },

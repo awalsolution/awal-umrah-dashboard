@@ -1,6 +1,6 @@
 <template>
   <n-card class="flex w-full mb-1">
-    <n-form ref="formRef" :label-width="80" :model="bookingHotel" :rules="rules">
+    <n-form ref="formRef" :label-width="80" :model="bookingHotel" :rules="hotelDetailRules">
       <n-row gutter="12">
         <n-col :span="4">
           <n-form-item label="Hotel City" path="city">
@@ -59,7 +59,7 @@
             <n-date-picker
               style="width: 100%"
               v-model:formatted-value="bookingHotel.check_in_date"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              value-format="EEE, MMM d, yyyy, h:mm a"
               type="datetime"
               clearable
             />
@@ -70,7 +70,7 @@
             <n-date-picker
               style="width: 100%"
               v-model:formatted-value="bookingHotel.check_out_date"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              value-format="EEE, MMM d, yyyy, h:mm a"
               type="datetime"
               clearable
             />
@@ -84,14 +84,9 @@
           labelHeightMedium: '0'
         }"
       >
-        <n-button :loading="loading" type="success" @click="handleValidateClick">
-          <template #icon>
-            <n-icon>
-              <SaveArrowRight20Filled />
-            </n-icon>
-          </template>
+        <button :loading="loading" type="button" class="edit_btn" @click="handleValidateClick">
           Save Hotel
-        </n-button>
+        </button>
       </n-form-item>
     </n-form>
   </n-card>
@@ -101,8 +96,8 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { usefilterHotel } from '@src/filters/hotel';
-import { SaveArrowRight20Filled } from '@vicons/fluent';
 import { updateRecordApi } from '@src/api/endpoints';
+import { hotelDetailRules } from '@src/rules/booking';
 
 const formRef = ref<FormInst | null>(null);
 const bookingHotel: any = ref({
@@ -125,7 +120,7 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      updateRecordApi(`/bookings/${props.id}`, {
+      updateRecordApi(`/booking/${props.id}`, {
         ...bookingHotel.value,
         type: 'booking hotel'
       }).then((res: any) => {
@@ -145,41 +140,10 @@ const handleValidateClick = (e: MouseEvent) => {
     }
   });
 };
-
-const rules = ref({
-  city: {
-    required: true,
-    message: 'Please Select City',
-    trigger: 'blur'
-  },
-  hotelId: {
-    type: 'number',
-    required: true,
-    message: 'Please Select Hotel',
-    trigger: 'change'
-  },
-  room_type: {
-    required: true,
-    message: 'Please Select Room Type',
-    trigger: 'blur'
-  },
-  nights: {
-    type: 'number',
-    required: true,
-    trigger: ['blur', 'change'],
-    message: 'Please Input Nights'
-  },
-  check_in_date: {
-    required: true,
-    message: 'Please Select Check In Date',
-    trigger: 'blur'
-  },
-  check_out_date: {
-    required: true,
-    message: 'Please Select Check Out Date',
-    trigger: 'blur'
-  }
-});
 </script>
 
-<style lang="less" scoped></style>
+<style lang="scss" scoped>
+.edit_btn {
+  @apply text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded text-sm px-5 py-2 text-center;
+}
+</style>

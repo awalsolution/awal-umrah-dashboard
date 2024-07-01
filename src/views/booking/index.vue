@@ -2,15 +2,14 @@
   <n-space :vertical="true">
     <n-card title="Booking List">
       <template #header-extra>
-        <NButton
-          secondary
-          type="info"
-          size="small"
+        <button
+          class="edit_btn"
+          type="button"
           @click="showModal = true"
           v-permission="{ action: ['booking create'] }"
         >
           Add Booking
-        </NButton>
+        </button>
       </template>
       <div class="flex flex-col gap-2 lg:flex-row w-full">
         <n-input
@@ -22,7 +21,7 @@
         >
           <template #prefix> <NIcon :component="SearchOutlined" class="mr-1" /> </template>
         </n-input>
-        <n-button secondary size="small" strong type="info" @click="fetchList"> Search </n-button>
+        <n-button secondary size="small" strong type="info" @click="fetchList">Search</n-button>
       </div>
       <div class="table_content_container">
         <table class="table">
@@ -31,7 +30,7 @@
               <th class="th">Booking No</th>
               <th class="th">Customer Name</th>
               <th class="th">Status</th>
-              <th class="th">Approval Date</th>
+              <th class="th">Arrival Date</th>
               <th class="th">Expected Departure</th>
               <th class="th">Group</th>
               <th class="th">Group No</th>
@@ -51,32 +50,35 @@
               <td colspan="10" class="data_placeholder">Record Not Exist</td>
             </tr>
             <tr v-else v-for="item in list" :key="item.id" class="body_tr">
-              <td class="td">{{ item.id }}</td>
+              <td class="td">{{ item?.booking_no }}</td>
               <td class="td">{{ item.customer_name }}</td>
               <td class="td">{{ item.status }}</td>
-              <td class="td">{{ item.approval_date }}</td>
+              <td class="td">{{ item.arrival_date }}</td>
               <td class="td">{{ item.expected_departure }}</td>
               <td class="td">{{ item.group_name }}</td>
               <td class="td">{{ item.group_no }}</td>
               <td class="td">{{ item.created_at }}</td>
               <td
-                class="sticky_el right-0 z-10"
+                class="td flex gap-3 justify-center"
                 v-permission="{
                   action: ['booking update', 'booking delete']
                 }"
               >
-                <n-dropdown
-                  @click="actionOperation(item)"
-                  :onSelect="selectedAction"
-                  trigger="click"
-                  :options="filteredOptions"
+                <button
+                  type="button"
+                  class="edit_btn"
+                  @click="
+                    router.push({
+                      name: 'booking_edit',
+                      params: { id: item.id }
+                    })
+                  "
                 >
-                  <n-button size="small" :circle="true">
-                    <n-icon>
-                      <more-outlined />
-                    </n-icon>
-                  </n-button>
-                </n-dropdown>
+                  Edit
+                </button>
+                <button type="button" class="delete_btn" @click="deleteConfirmationDialog(item)">
+                  Delete
+                </button>
               </td>
             </tr>
           </tbody>
@@ -113,21 +115,19 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed, type Ref } from 'vue';
+import { ref, onMounted, type Ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { NIcon, NPagination, useDialog } from 'naive-ui';
-import { MoreOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@vicons/antd';
+import { SearchOutlined } from '@vicons/antd';
 import { deleteRecordApi } from '@src/api/endpoints';
-import { renderIcon } from '@src/utils/renderIcon';
-import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import AddBooking from '@src/components/booking/AddBooking.vue';
 
+const router = useRouter();
 const dialog = useDialog();
 const selectedOption: Ref = ref(null);
 const showModal: Ref = ref(false);
-const showEditModal: Ref = ref(false);
 const selectedId: Ref = ref();
-const { hasPermission } = usePermission();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, perPage, searchParams }: any =
@@ -137,26 +137,8 @@ onMounted(() => {
   getList();
 });
 
-const moreOptions = ref([
-  {
-    label: 'Edit',
-    key: 'edit',
-    icon: renderIcon(EditOutlined),
-    permission: hasPermission(['booking update'])
-  },
-  {
-    label: 'Delete',
-    key: 'delete',
-    icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['booking delete'])
-  }
-]);
-
-const filteredOptions = computed(() => {
-  return moreOptions.value.filter((option) => option.permission);
-});
-
-function confirmationDialog() {
+function deleteConfirmationDialog(item: { id: number }) {
+  selectedId.value = item.id;
   dialog.error({
     title: 'Confirmation',
     content: () => 'Are you sure you want to delete?',
@@ -181,19 +163,6 @@ function deleteOperation() {
   selectedOption.value = null;
 }
 
-const actionOperation = (item: any) => {
-  if (selectedOption.value === 'edit') {
-    showEditModal.value = true;
-    selectedId.value = item.id;
-    // router.push(`/roles/${item.id}`);
-  } else if (selectedOption.value === 'delete') {
-    selectedId.value = item.id;
-    confirmationDialog();
-  }
-};
-const selectedAction = (key: any) => {
-  selectedOption.value = key;
-};
 const fetchList = () => {
   getList(searchParams.value);
 };
@@ -220,6 +189,12 @@ const fetchList = () => {
 }
 .sticky_el {
   @apply sticky bg-gray-50 dark:bg-gray-700 px-6 whitespace-nowrap text-center border border-gray-200 dark:border-gray-800;
+}
+.edit_btn {
+  @apply text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded text-sm px-5 py-2 text-center;
+}
+.delete_btn {
+  @apply text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l font-medium rounded text-sm px-5 py-2 text-center;
 }
 .data_placeholder {
   text-align: center;

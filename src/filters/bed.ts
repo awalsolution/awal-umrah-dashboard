@@ -10,7 +10,7 @@ export function usefilterBed() {
     if (query !== '') {
       bedLoading.value = true;
       const response: any = await getRecordsApi('/bed', { name: query });
-      beds.value = response.result;
+      beds.value = response.data;
       bedLoading.value = false;
     } else {
       beds.value = [];
@@ -28,7 +28,7 @@ export function usefilterBed() {
         room_id: roomId,
         status: status
       });
-      beds.value = response.result;
+      beds.value = response.data;
       bedLoading.value = false;
     } else {
       beds.value = [];

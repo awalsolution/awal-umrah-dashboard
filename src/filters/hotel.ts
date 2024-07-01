@@ -10,7 +10,7 @@ export function usefilterHotel() {
     if (query !== '') {
       hotelLoading.value = true;
       const response: any = await getRecordsApi('/hotel', { name: query });
-      hotels.value = response.result;
+      hotels.value = response.data;
       hotelLoading.value = false;
     } else {
       hotels.value = [];
@@ -21,7 +21,7 @@ export function usefilterHotel() {
     if (query !== '') {
       hotelLoading.value = true;
       const response: any = await getRecordsApi('/hotel', { city: query });
-      hotels.value = response.result;
+      hotels.value = response.data;
       hotelLoading.value = false;
     } else {
       hotels.value = [];
@@ -32,7 +32,7 @@ export function usefilterHotel() {
     hotelLoading.value = true;
     const response: any = await getRecordsApi('/hotel');
     console.log(response);
-    hotels.value = response.result;
+    hotels.value = response.data;
     hotelLoading.value = false;
   }
 

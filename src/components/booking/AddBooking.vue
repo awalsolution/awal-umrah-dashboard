@@ -44,9 +44,9 @@
             </n-form-item>
           </n-col>
           <n-col :span="8">
-            <n-form-item label="Approval Date" path="approval_date">
+            <n-form-item label="Approval Date" path="arrival_date">
               <n-date-picker
-                v-model:formatted-value="formValue.approval_date"
+                v-model:formatted-value="formValue.arrival_date"
                 clearable
                 style="width: 100%"
                 type="datetime"
@@ -78,17 +78,15 @@
 
 <script lang="ts" setup>
 import { ref, type Ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { generalFormRules } from '@src/rules/booking';
 
-const router = useRouter();
 const formRef = ref<FormInst | null>(null);
 const formValue: Ref = ref({});
 const rules = generalFormRules();
 
-// const emits = defineEmits(['created']);
+const emits = defineEmits(['created']);
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
@@ -96,10 +94,7 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       createRecordApi('/booking', formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        router.push({
-          name: 'booking_list'
-        });
-        // emits('created', res.data);
+        emits('created', res.data);
       });
     } else {
       console.log(errors);

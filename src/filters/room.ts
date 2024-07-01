@@ -29,7 +29,7 @@ export function usefilterRoom() {
         room_type: roomType,
         status: status
       });
-      rooms.value = response.result;
+      rooms.value = response.data;
       roomLoading.value = false;
     } else {
       rooms.value = [];
@@ -39,7 +39,7 @@ export function usefilterRoom() {
   async function getRooms() {
     roomLoading.value = true;
     const response: any = await getRecordsApi('/room');
-    rooms.value = response.result;
+    rooms.value = response.data;
     roomLoading.value = false;
   }
 

@@ -72,7 +72,7 @@
                     clearable
                     style="width: 100%"
                     type="datetime"
-                    value-format="yyyy-MM-dd HH:mm:ss"
+                    value-format="EEE, MMM d, yyyy, h:mm a"
                   />
                 </n-form-item>
               </n-col>
@@ -83,11 +83,11 @@
                     clearable
                     style="width: 100%"
                     type="datetime"
-                    value-format="yyyy-MM-dd HH:mm:ss"
+                    value-format="EEE, MMM d, yyyy, h:mm a"
                   />
                 </n-form-item>
               </n-col>
-              <n-col :span="6">
+              <!-- <n-col :span="6">
                 <n-form-item label="Confirmed Ticket" path="confirmed_ticket">
                   <n-switch
                     :checked-value="1"
@@ -95,18 +95,18 @@
                     v-model:value="bookingGeneralDetails.confirmed_ticket"
                   />
                 </n-form-item>
-              </n-col>
+              </n-col> -->
             </n-row>
             <n-space :vertical="true">
               <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
-                <n-button :loading="loading" secondary type="info" @click="saveGeneralBooking">
-                  <template #icon>
-                    <n-icon>
-                      <SaveArrowRight20Filled />
-                    </n-icon>
-                  </template>
+                <button
+                  :loading="loading"
+                  type="button"
+                  class="edit_btn"
+                  @click="saveGeneralBooking"
+                >
                   Update Booking
-                </n-button>
+                </button>
               </n-form-item>
             </n-space>
           </n-form>
@@ -299,11 +299,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { type FormInst } from 'naive-ui';
-import {
-  Info16Filled,
-  SaveArrowRight20Filled,
-  TextBulletListSquareEdit24Regular
-} from '@vicons/fluent';
+import { Info16Filled, TextBulletListSquareEdit24Regular } from '@vicons/fluent';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
 import MemberHotelInfo from '@src/components/booking/memberHotelInfo.vue';
 import AssignHotel from '@src/components/hotel/AssignHotel.vue';
@@ -344,8 +340,7 @@ async function getBookingData() {
         group_name: res.data.group_name,
         category: res.data.category,
         arrival_date: res.data.arrival_date,
-        expected_departure: res.data.expected_departure,
-        confirmed_ticket: res.data.confirmed_ticket
+        expected_departure: res.data.expected_departure
       };
       if (res.data.members) {
         members.value = res.data.members;
@@ -390,3 +385,9 @@ const showModel = (member: any, type: string) => {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.edit_btn {
+  @apply text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl font-medium rounded text-sm px-5 py-2 text-center;
+}
+</style>

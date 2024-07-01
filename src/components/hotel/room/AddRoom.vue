@@ -103,7 +103,7 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       createRecordApi('/room', rooms.value).then((res: any) => {
         window['$message'].success(res.message);
-        emits('created', res.result);
+        emits('created', res.data);
       });
     } else {
       console.log(errors);

@@ -77,7 +77,7 @@ const props = defineProps({
   }
 });
 // get category for update
-getRecordApi(`/room/${props.id}`).then((res: any) => (rooms.value = res.result));
+getRecordApi(`/room/${props.id}`).then((res: any) => (rooms.value = res.data));
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
@@ -85,7 +85,7 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       updateRecordApi(`/room/${rooms.value.id}`, rooms.value).then((res: any) => {
         window['$message'].success(res.message);
-        emits('updated', res.result);
+        emits('updated', res.data);
       });
     } else {
       console.log(errors);
