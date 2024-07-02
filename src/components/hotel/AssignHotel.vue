@@ -140,7 +140,9 @@ import { usefilterBed } from '@src/filters/bed';
 import { SaveArrowRight20Filled } from '@vicons/fluent';
 import { updateRecordApi } from '@src/api/endpoints';
 import { assignHotelRules } from '@src/rules/hotel';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const formRef = ref<FormInst | null>(null);
 const assignHotel: Ref = ref({});
 const loading: Ref = ref(false);
@@ -172,12 +174,14 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      updateRecordApi(`/bookings/${props.id}`, { ...assignHotel.value, type: 'hotel' }).then(
-        (res: any) => {
-          window['$message'].success(res.message);
-          emits('updated');
-        }
-      );
+      updateRecordApi(`/booking/${props.id}`, {
+        ...assignHotel.value,
+        type: 'hotel',
+        booking_id: route.params.id
+      }).then((res: any) => {
+        window['$message'].success(res.message);
+        emits('updated');
+      });
     } else {
       console.log(errors);
       window['$message'].error('Please fill out required fields');

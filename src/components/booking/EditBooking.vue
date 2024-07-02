@@ -372,6 +372,7 @@ const showInfoModel = (hotel = null) => {
   showHotelInfoModal.value = true;
 };
 const actionOperation = (id: any, hotel = null) => {
+  console.log(id);
   selectedId.value = id;
   selectedHotel.value = hotel;
   showAssignModal.value = true;

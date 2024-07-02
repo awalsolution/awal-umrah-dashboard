@@ -49,8 +49,8 @@
                 v-model:formatted-value="formValue.arrival_date"
                 clearable
                 style="width: 100%"
-                type="datetime"
                 value-format="yyyy-MM-dd HH:mm:ss"
+                type="datetime"
               />
             </n-form-item>
           </n-col>
@@ -60,8 +60,8 @@
                 v-model:formatted-value="formValue.expected_departure"
                 clearable
                 style="width: 100%"
-                type="datetime"
                 value-format="yyyy-MM-dd HH:mm:ss"
+                type="datetime"
               />
             </n-form-item>
           </n-col>

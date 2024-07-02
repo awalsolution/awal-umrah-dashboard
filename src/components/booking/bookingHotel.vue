@@ -59,7 +59,7 @@
             <n-date-picker
               style="width: 100%"
               v-model:formatted-value="bookingHotel.check_in_date"
-              value-format="EEE, MMM d, yyyy, h:mm a"
+              value-format="yyyy-MM-dd HH:mm:ss"
               type="datetime"
               clearable
             />
@@ -70,7 +70,7 @@
             <n-date-picker
               style="width: 100%"
               v-model:formatted-value="bookingHotel.check_out_date"
-              value-format="EEE, MMM d, yyyy, h:mm a"
+              value-format="yyyy-MM-dd HH:mm:ss"
               type="datetime"
               clearable
             />
