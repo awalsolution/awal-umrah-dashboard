@@ -38,7 +38,7 @@
               v-model:value="assignHotel.room_type"
               filterable
               placeholder="Select Room Type"
-              @update:value="findRoomByHotel(assignHotel.hotel_id, assignHotel.room_type, 'active')"
+              @update:value="findRoomByHotel(assignHotel.hotel_id, assignHotel.room_type, 1)"
               :options="[
                 { label: 'Double Bed', value: 'double bed' },
                 { label: 'Quad Bed', value: 'quad bed' },
@@ -174,10 +174,11 @@ const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
   formRef.value?.validate((errors) => {
     if (!errors) {
-      updateRecordApi(`/booking/${props.id}`, {
+      updateRecordApi(`/booking/${route.params.id}`, {
         ...assignHotel.value,
         type: 'hotel',
-        booking_id: route.params.id
+        // booking_id: route.params.id,
+        booking_member_detail_id: props.id
       }).then((res: any) => {
         window['$message'].success(res.message);
         emits('updated');

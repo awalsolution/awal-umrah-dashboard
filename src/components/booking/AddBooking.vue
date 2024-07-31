@@ -44,7 +44,7 @@
             </n-form-item>
           </n-col>
           <n-col :span="8">
-            <n-form-item label="Approval Date" path="arrival_date">
+            <n-form-item label="Arrival Date" path="arrival_date">
               <n-date-picker
                 v-model:formatted-value="formValue.arrival_date"
                 clearable

@@ -140,7 +140,10 @@
             </tbody>
           </n-table>
         </n-tab-pane>
-        <n-tab-pane name="members" tab="List Members">
+        <n-tab-pane name="add_members" tab="Add Members">
+          <add-member :booking-id="route.params.id" @operation="getBookingData()" />
+        </n-tab-pane>
+        <n-tab-pane name="members" tab="Members Details">
           <n-card class="flex w-full mb-1" title="Members Details">
             <n-row gutter="12">
               <n-col v-for="member of members" :key="member" :span="6">
@@ -242,9 +245,6 @@
               </n-col>
             </n-row>
           </n-card>
-        </n-tab-pane>
-        <n-tab-pane name="add_members" tab="Add Members">
-          <add-member :booking-id="route.params.id" @operation="getBookingData()" />
         </n-tab-pane>
       </n-tabs>
     </n-card>
