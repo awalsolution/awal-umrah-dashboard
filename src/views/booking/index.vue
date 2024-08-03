@@ -69,6 +69,18 @@
                   class="edit_btn"
                   @click="
                     router.push({
+                      name: 'booking_print',
+                      params: { id: item.id }
+                    })
+                  "
+                >
+                  Print
+                </button>
+                <button
+                  type="button"
+                  class="edit_btn"
+                  @click="
+                    router.push({
                       name: 'booking_edit',
                       params: { id: item.id }
                     })
