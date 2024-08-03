@@ -31,6 +31,9 @@
           <n-switch v-model:value="formValue.status" :checked-value="1" :unchecked-value="0" />
         </n-form-item>
       </n-col>
+      <n-col :span="24">
+        <ImageUploader v-model:value="formValue.logo" />
+      </n-col>
     </n-row>
     <n-space justify="end">
       <n-form-item :theme-overrides="{ labelHeightSmall: '0', feedbackHeightSmall: '0' }">
@@ -44,6 +47,7 @@
 import { ref } from 'vue';
 import { type FormInst } from 'naive-ui';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
+import { ImageUploader } from '@src/components/common/upload';
 import { formRules } from '@src/rules/visaCompany';
 
 const formRef = ref<FormInst | null>(null);
