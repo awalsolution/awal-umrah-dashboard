@@ -6,11 +6,6 @@ export const formRules = ref({
     message: 'Please Enter Name',
     trigger: 'blur'
   },
-  email: {
-    required: true,
-    message: 'Please Enter Email',
-    trigger: 'blur'
-  },
   phone_number: {
     required: true,
     message: 'Please Enter phone number',

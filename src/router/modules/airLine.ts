@@ -1,31 +1,31 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { DollarCircleOutlined } from '@vicons/antd';
+import { PeopleCommunityAdd20Regular } from '@vicons/fluent';
 import { DashboardLayout } from '@src/router/constant';
 import { renderIcon } from '@src/utils/renderIcon';
 
-const routeName = 'plan';
+const routeName = 'airLine';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/plan',
+    path: '/air-line',
     name: routeName,
-    redirect: '/plan/list',
+    redirect: '/air-line/list',
     component: DashboardLayout,
     meta: {
-      title: 'Plan',
-      icon: renderIcon(DollarCircleOutlined),
-      permissions: ['plan menu'],
-      sort: 9
+      title: 'Air Line',
+      icon: renderIcon(PeopleCommunityAdd20Regular),
+      permissions: ['air line menu'],
+      sort: 2
     },
     children: [
       {
         path: 'list',
         name: `${routeName}_list`,
         meta: {
-          title: 'Plan List',
-          permissions: ['plan menu']
+          title: 'Air Line List',
+          permissions: ['air line menu']
         },
-        component: () => import('@src/views/plan/index.vue')
+        component: () => import('@src/views/air-line/index.vue')
       }
     ]
   }

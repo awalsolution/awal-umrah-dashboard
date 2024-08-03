@@ -1,15 +1,15 @@
 <template>
   <n-space :vertical="true">
-    <n-card title="Visa Company List">
+    <n-card title="Air Line List">
       <template #header-extra>
         <NButton
           secondary
           type="info"
           size="small"
           @click="showModal = true"
-          v-permission="{ action: ['visa company create'] }"
+          v-permission="{ action: ['air line create'] }"
         >
-          Add Visa Company
+          Add Air Line
         </NButton>
       </template>
       <div class="flex flex-col gap-2 lg:flex-row w-full">
@@ -39,10 +39,8 @@
           <thead class="head">
             <tr>
               <th class="th">Name</th>
-              <th class="th">Email</th>
               <th class="th">Logo</th>
               <th class="th">Status</th>
-              <th class="th">Phone#</th>
               <th class="th">Phone#</th>
               <th class="th">Address</th>
               <th class="th">Auther</th>
@@ -50,7 +48,7 @@
               <th
                 class="sticky_el right-0 z-20"
                 v-permission="{
-                  action: ['visa company update', 'visa company delete']
+                  action: ['air line update', 'air line delete']
                 }"
               >
                 Actions
@@ -63,7 +61,6 @@
             </tr>
             <tr v-else v-for="item in list" :key="item.id" class="body_tr">
               <td class="td">{{ item?.name }}</td>
-              <td class="td">{{ item?.email }}</td>
               <td class="td text-center pt-2">
                 <n-avatar size="large" :src="`${imgUrl}${item?.logo}`" />
               </td>
@@ -72,15 +69,14 @@
                   {{ item.status === 1 ? 'Active' : 'Disable' }}
                 </n-tag>
               </td>
-              <td class="td">{{ item?.phone1 }}</td>
-              <td class="td">{{ item?.phone2 }}</td>
+              <td class="td">{{ item?.phone_number }}</td>
               <td class="td">{{ item?.address }}</td>
               <td class="td">{{ item?.created_by }}</td>
               <td class="td">{{ item.created_at }}</td>
               <td
                 class="sticky_el right-0 z-10"
                 v-permission="{
-                  action: ['visa company update', 'visa company delete']
+                  action: ['air line update', 'air line delete']
                 }"
               >
                 <n-dropdown
@@ -111,15 +107,15 @@
         :show-quick-jumper="true"
         :show-size-picker="true"
       >
-        <template #prefix="{ itemCount }"> Total Visa Company: {{ itemCount }} </template>
+        <template #prefix="{ itemCount }"> Total Air Lines: {{ itemCount }} </template>
       </n-pagination>
     </n-card>
     <n-modal style="width: 50%" v-model:show="showModal" preset="dialog">
       <template #header>
-        <div>Create New Visa Company</div>
+        <div>Create New Air Line</div>
       </template>
       <n-space :vertical="true">
-        <add-visa-company
+        <add-air-line
           @created="
             getList();
             showModal = false;
@@ -130,10 +126,10 @@
 
     <n-modal style="width: 50%" v-model:show="showEditModal" preset="dialog">
       <template #header>
-        <div>Update Visa Company</div>
+        <div>Update Air Line</div>
       </template>
       <n-space :vertical="true">
-        <edit-visa-company
+        <edit-air-line
           :id="selectedId"
           @updated="
             getList();
@@ -154,8 +150,8 @@ import { useEnv } from '@src/hooks/useEnv';
 import { renderIcon } from '@src/utils/renderIcon';
 import { usePermission } from '@src/hooks/permission/usePermission';
 import { usePagination } from '@src/hooks/pagination/usePagination';
-import AddVisaCompany from '@src/components/visa-company/AddVisaCompany.vue';
-import EditVisaCompany from '@src/components/visa-company/EditVisaCompany.vue';
+import AddAirLine from '@src/components/air-line/AddAirLine.vue';
+import EditAirLine from '@src/components/air-line/EditAirLine.vue';
 
 const { imgUrl } = useEnv();
 const dialog = useDialog();
@@ -167,7 +163,7 @@ const { hasPermission } = usePermission();
 
 // fetch all records
 const { getList, list, page, pageSizes, itemCount, pageSize, searchParams }: any =
-  usePagination('/visa-company');
+  usePagination('/air-line');
 
 onMounted(() => {
   getList();
@@ -178,13 +174,13 @@ const moreOptions = ref([
     label: 'Edit',
     key: 'edit',
     icon: renderIcon(EditOutlined),
-    permission: hasPermission(['visa company update'])
+    permission: hasPermission(['air line update'])
   },
   {
     label: 'Delete',
     key: 'delete',
     icon: renderIcon(DeleteOutlined),
-    permission: hasPermission(['visa company delete'])
+    permission: hasPermission(['air line delete'])
   }
 ]);
 
@@ -203,7 +199,7 @@ function confirmationDialog() {
 }
 
 function deleteOperation() {
-  deleteRecordApi(`/visa-company/${selectedId.value}`)
+  deleteRecordApi(`/air-line/${selectedId.value}`)
     .then((res: any) => {
       window['$message'].success(res.message);
       getList();
