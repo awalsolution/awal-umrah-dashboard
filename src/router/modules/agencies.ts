@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { PeopleCommunityAdd20Regular } from '@vicons/fluent';
+import { BuildingHome20Regular } from '@vicons/fluent';
 import { DashboardLayout } from '@src/router/constant';
 import { renderIcon } from '@src/utils/renderIcon';
 
@@ -13,7 +13,7 @@ const routes: RouteRecordRaw[] = [
     component: DashboardLayout,
     meta: {
       title: 'Agencies',
-      icon: renderIcon(PeopleCommunityAdd20Regular),
+      icon: renderIcon(BuildingHome20Regular),
       permissions: ['agency menu'],
       sort: 3
     },

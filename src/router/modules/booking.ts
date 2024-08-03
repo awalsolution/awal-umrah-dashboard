@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { CartOutline } from '@vicons/ionicons5';
+import { BookInformation20Regular } from '@vicons/fluent';
 import { DashboardLayout } from '@src/router/constant';
 import { renderIcon } from '@src/utils/renderIcon';
 
@@ -13,7 +13,7 @@ const routes: RouteRecordRaw[] = [
     component: DashboardLayout,
     meta: {
       title: 'Bookings',
-      icon: renderIcon(CartOutline),
+      icon: renderIcon(BookInformation20Regular),
       permissions: ['booking menu'],
       sort: 4
     },

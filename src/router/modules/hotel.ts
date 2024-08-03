@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router';
 import { DashboardLayout } from '@src/router/constant';
-import { CartOutline } from '@vicons/ionicons5';
+import { Hotel } from '@vicons/fa';
 import { renderIcon } from '@src/utils/renderIcon';
 
 const routeName = 'hotel';
@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
     component: DashboardLayout,
     meta: {
       title: 'Hotels',
-      icon: renderIcon(CartOutline),
+      icon: renderIcon(Hotel),
       permissions: ['hotel menu'],
       sort: 4
     },

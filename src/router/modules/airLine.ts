@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { PeopleCommunityAdd20Regular } from '@vicons/fluent';
+import { Airplane20Regular } from '@vicons/fluent';
 import { DashboardLayout } from '@src/router/constant';
 import { renderIcon } from '@src/utils/renderIcon';
 
@@ -13,7 +13,7 @@ const routes: RouteRecordRaw[] = [
     component: DashboardLayout,
     meta: {
       title: 'Air Line',
-      icon: renderIcon(PeopleCommunityAdd20Regular),
+      icon: renderIcon(Airplane20Regular),
       permissions: ['air line menu'],
       sort: 2
     },
