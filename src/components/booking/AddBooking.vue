@@ -78,15 +78,15 @@
 
 <script lang="ts" setup>
 import { ref, type Ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { type FormInst } from 'naive-ui';
 import { createRecordApi } from '@src/api/endpoints';
 import { generalFormRules } from '@src/rules/booking';
 
+const router = useRouter();
 const formRef = ref<FormInst | null>(null);
 const formValue: Ref = ref({});
 const rules = generalFormRules();
-
-const emits = defineEmits(['created']);
 
 const handleValidateClick = (e: MouseEvent) => {
   e.preventDefault();
@@ -94,7 +94,9 @@ const handleValidateClick = (e: MouseEvent) => {
     if (!errors) {
       createRecordApi('/booking', formValue.value).then((res: any) => {
         window['$message'].success(res.message);
-        emits('created', res.data);
+        router.push({
+          name: 'booking_list'
+        });
       });
     } else {
       console.log(errors);
