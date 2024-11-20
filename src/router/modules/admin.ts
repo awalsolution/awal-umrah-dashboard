@@ -9,7 +9,7 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: 'Admin',
       permissions: ['dashboard menu'],
-      sort: 2
+      sort: 3
     },
     children: [
       {
