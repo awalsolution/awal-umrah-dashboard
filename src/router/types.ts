@@ -26,23 +26,23 @@ export interface Meta {
   hidden?: boolean;
 }
 
-export interface Menu {
-  title: string;
-  label: string;
-  key: string;
-  meta: RouteMeta;
-  name: string;
-  component?: Component | string;
-  components?: Component;
-  children?: AppRouteRecordRaw[];
-  props?: Recordable;
-  fullPath?: string;
-  icon?: any;
-  path: string;
-  permissions?: string[];
-  redirect?: string;
-  sort?: number;
-}
+// export interface Menu {
+//   title: string;
+//   label: string;
+//   key: string;
+//   meta: RouteMeta;
+//   name: string;
+//   component?: Component | string;
+//   components?: Component;
+//   children?: AppRouteRecordRaw[];
+//   props?: Recordable;
+//   fullPath?: string;
+//   icon?: any;
+//   path: string;
+//   permissions?: string[];
+//   redirect?: string;
+//   sort?: number;
+// }
 
 export interface IModuleType {
   default: Array<RouteRecordRaw> | RouteRecordRaw;

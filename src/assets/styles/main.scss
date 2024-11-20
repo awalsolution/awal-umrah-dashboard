@@ -1,3 +1,69 @@
+@import '@src/assets/styles/layout/layout.scss';
+@import '@src/assets/styles/demo/demo.scss';
+@import 'primeicons/primeicons.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer base {
+  .intro-x,
+  .-intro-x,
+  .intro-y,
+  .-intro-y {
+    position: relative;
+    opacity: 0;
+    z-index: 50;
+  }
+
+  .intro-x:nth-child(1),
+  .-intro-x:nth-child(1),
+  .intro-y:nth-child(1),
+  .-intro-y:nth-child(1) {
+    z-index: 49;
+    animation-delay: 0.1s;
+  }
+
+  .intro-x:nth-child(2),
+  .-intro-x:nth-child(2),
+  .intro-y:nth-child(2),
+  .-intro-y:nth-child(2) {
+    z-index: 48;
+    animation-delay: 0.2s;
+  }
+
+  /* Continue this for nth-child(3) to nth-child(50) */
+
+  .intro-x {
+    transform: translateX(50px);
+    animation: intro-x-animation 0.4s ease-in-out forwards;
+  }
+
+  .-intro-x {
+    transform: translateX(-50px);
+    animation: intro-x-animation 0.4s ease-in-out forwards;
+  }
+
+  .intro-y {
+    transform: translateY(50px);
+    animation: intro-y-animation 0.4s ease-in-out forwards;
+  }
+
+  .-intro-y {
+    transform: translateY(-50px);
+    animation: intro-y-animation 0.4s ease-in-out forwards;
+  }
+}
+
+@keyframes intro-x-animation {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes intro-y-animation {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

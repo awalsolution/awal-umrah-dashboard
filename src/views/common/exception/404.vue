@@ -5,12 +5,13 @@
     </div>
     <div class="text-center">
       <h1 class="text-base text-gray-500">Sorry, the page you visited does not exist</h1>
-      <n-button type="info" @click="goHome">Back to the Home Page</n-button>
+      <Button severity="info" @click="goHome">Back to the Home Page</Button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import Button from 'primevue/button';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 

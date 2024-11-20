@@ -22,10 +22,7 @@ export const verifyDomainNameApi = async (domain: string) => {
     const { response } = error;
     const { data, status } = response || {};
     if (status === 404 || status === 400) {
-      window['$message'].error(data.message, {
-        closable: true,
-        duration: 9000
-      });
+      window.toast('error', 'Error Message', data.message);
     }
     storage.remove(TENANT_API_KEY);
   }

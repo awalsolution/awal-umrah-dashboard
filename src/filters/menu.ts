@@ -1,18 +1,20 @@
-import { ref, type Ref } from 'vue';
+import { ref } from 'vue';
 import { getRecordsApi } from '@src/api/endpoints';
 import { isEmpty } from 'lodash';
 
 export function useMenufilter() {
-  const menus: Ref = ref([]);
-  const menuLoading: Ref = ref(false);
-  const menusInitialized: Ref = ref(false);
+  const menus: any = ref([]);
+  const menuLoading = ref(false);
+  const menusInitialized = ref(false);
 
   async function findMenu(query: any) {
     if (isEmpty(query)) {
       menus.value = [];
     } else {
       menuLoading.value = true;
-      const response: any = await getRecordsApi('/menu', { name: query });
+      const response: any = await getRecordsApi('/menus', {
+        name: query
+      });
       menus.value = response.data;
       menuLoading.value = false;
     }
@@ -20,7 +22,7 @@ export function useMenufilter() {
 
   async function getMenus() {
     menuLoading.value = true;
-    const response: any = await getRecordsApi('/menu');
+    const response: any = await getRecordsApi('/menus');
     menus.value = response.data;
     menuLoading.value = false;
   }
@@ -31,6 +33,7 @@ export function useMenufilter() {
       menusInitialized.value = true;
     }
   }
+
   return {
     menus,
     menuLoading,

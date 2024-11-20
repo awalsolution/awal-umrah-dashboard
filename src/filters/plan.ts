@@ -12,7 +12,7 @@ export function usePlanfilter() {
       plans.value = [];
     } else {
       planLoading.value = true;
-      const response: any = await getRecordsApi('/plan', { name: query });
+      const response: any = await getRecordsApi('/plans', { name: query });
       plans.value = response.data;
       planLoading.value = false;
     }
@@ -20,7 +20,7 @@ export function usePlanfilter() {
 
   async function getPlans() {
     planLoading.value = true;
-    const response: any = await getRecordsApi('/plan');
+    const response: any = await getRecordsApi('/plans');
     console.log('plan data =>', response);
     plans.value = response.data;
     planLoading.value = false;

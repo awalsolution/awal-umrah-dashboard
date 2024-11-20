@@ -33,7 +33,7 @@ export const useUserStore = defineStore('app-user', () => {
     const res: any = await loginApi(params);
     console.log(res);
     const { data, code } = res;
-    if (code === 200) {
+    if (code === 200 && data?.token) {
       const ex = 7 * 24 * 60 * 60;
       storage.set(ACCESS_TOKEN, data.token, ex);
       setToken(data.token);

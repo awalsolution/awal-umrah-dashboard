@@ -1,4 +1,5 @@
-/** @type {import('tailwindcss').Config} */
+import tailwindcssPrimeui from 'tailwindcss-primeui';
+
 const DEFAULT_FONTS =
   'system-ui, -apple-system, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif';
 
@@ -20,6 +21,6 @@ export default {
       }
     }
   },
-  plugins: [],
+  plugins: [tailwindcssPrimeui],
   darkMode: ['class', '[data-theme="dark"]']
 };

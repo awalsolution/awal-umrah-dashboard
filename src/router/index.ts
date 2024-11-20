@@ -24,7 +24,7 @@ routeModuleList.sort(sortRoute);
 
 export const RootRoute: RouteRecordRaw = {
   path: '/',
-  name: 'Root',
+  name: 'root',
   redirect: PageEnum.BASE_HOME,
   meta: {
     title: 'Root'
@@ -34,18 +34,16 @@ export const RootRoute: RouteRecordRaw = {
 export const LoginRoute: RouteRecordRaw = {
   path: '/login',
   name: 'Login',
-  component: () => import('@src/layouts/AuthLayout/index.vue'),
+  component: () => import('@src/layouts/AuthLayout.vue'),
   meta: {
-    title: 'Login',
-    dismissTab: true
+    title: 'Login'
   },
   children: [
     {
       path: '',
       name: 'login',
       meta: {
-        title: 'Login',
-        dismissTab: true
+        title: 'Login'
       },
       component: () => import('@src/views/login/index.vue')
     }

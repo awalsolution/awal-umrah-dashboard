@@ -1,54 +1,76 @@
 <template>
-  <n-space :vertical="true">
-    <n-card title="Permissions List">
-      <template #header-extra>
-        <NButton secondary type="info" size="medium" @click="handleAssignPermissions">
-          Assign Permission
-        </NButton>
-      </template>
-      <n-checkbox-group class="mx-2" v-model:value="selectedPermissions">
-        <n-row>
-          <n-col v-for="permission of permissions" :key="permission.id" :span="7">
-            <n-checkbox :value="permission.id" :label="permission.name" class="pb-1" />
-            <n-tag size="small" :type="permission.type === 'private' ? 'error' : 'success'">
+  <Card>
+    <template #title>
+      <div class="flex justify-between items-center">
+        <h1 class="text-2xl">Permissions List</h1>
+        <Button
+          label="Assign Permission"
+          @click="handleAssignPermissions"
+          severity="primary"
+          icon="pi pi-lock"
+        />
+      </div>
+    </template>
+    <template #content>
+      <div v-for="item in menus" :key="item.id" class="mb-5">
+        <h2 class="text-xl font-semibold mb-3 capitalize">{{ item.name }}</h2>
+        <div class="grid grid-cols-3">
+          <div
+            v-for="permission of item.permissions"
+            :key="permission.id"
+            class="flex items-center gap-3 mb-3"
+          >
+            <Checkbox
+              v-model="selectedPermissions"
+              :inputId="permission.name"
+              name="permission"
+              :value="permission.id"
+            />
+            <label :for="permission.name">{{ permission.name }}</label>
+            <Tag :severity="permission.type === 'private' ? 'danger' : 'primary'">
               {{ permission.type }}
-            </n-tag>
-          </n-col>
-        </n-row>
-      </n-checkbox-group>
-    </n-card>
-  </n-space>
+            </Tag>
+          </div>
+        </div>
+      </div>
+    </template>
+  </Card>
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { usePermissionfilter } from '@src/filters/permission';
+import { useMenufilter } from '@src/filters/menu';
 import { getRecordApi, updateRecordApi } from '@src/api/endpoints';
+import Tag from 'primevue/tag';
+import Card from 'primevue/card';
+import Checkbox from 'primevue/checkbox';
+import Button from 'primevue/button';
 
-const { permissions, getPermissions } = usePermissionfilter();
+const { menus, getMenus } = useMenufilter();
 const route = useRoute();
 const router = useRouter();
-const userData: Ref = ref({});
 const selectedPermissions: Ref = ref([]);
 const fetchEndpoint: Ref = ref();
 const updateEndpoint: Ref = ref();
 
 onMounted(() => {
-  if (route.params && (route.params.roleId || route.params.userId)) {
-    getPermissions();
+  if (route.params && (route.params.roleId || route.params.userId || route.params.planId)) {
+    getMenus();
     if (route.params.roleId) {
-      fetchEndpoint.value = `/role/${route.params.roleId}`;
-      updateEndpoint.value = '/role/assign-permission/' + route.params.roleId;
+      fetchEndpoint.value = `/roles/${route.params.roleId}`;
+      updateEndpoint.value = '/roles/assign-permission/' + route.params.roleId;
     } else if (route.params.userId) {
-      fetchEndpoint.value = `/user/${route.params.userId}`;
-      updateEndpoint.value = '/user/assign-permission/' + route.params.userId;
+      fetchEndpoint.value = `/users/${route.params.userId}`;
+      updateEndpoint.value = '/users/assign-permission/' + route.params.userId;
+    } else if (route.params.planId) {
+      fetchEndpoint.value = `/plans/${route.params.planId}`;
+      updateEndpoint.value = '/plans/assign-permission/' + route.params.planId;
     }
     getRecordApi(fetchEndpoint.value).then((res: any) => {
-      userData.value = res.data;
       selectedPermissions.value = res.data.permissions.map((item: any) => {
         return item.id;
       });
-      window['$message'].success(res.message);
+      window.toast('success', 'Success Message', res.message);
     });
   } else {
     router.replace({ name: 'ErrorPageSon' });
@@ -59,8 +81,16 @@ const handleAssignPermissions = () => {
   updateRecordApi(updateEndpoint.value, {
     permissions: selectedPermissions.value
   }).then((res: any) => {
-    window['$message'].success(res.message);
+    if (route.params.roleId) {
+      router.replace({ name: 'role_list' });
+    } else if (route.params.planId) {
+      router.replace({ name: 'plan_list' });
+    } else {
+      router.replace({ name: 'user_list' });
+    }
+    window.toast('success', 'Success Message', res.message);
   });
 };
 </script>
+
 <style lang="scss" scoped></style>

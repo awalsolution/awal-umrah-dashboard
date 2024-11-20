@@ -1,19 +1,14 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { DashboardOutlined } from '@vicons/antd';
 import { DashboardLayout } from '@src/router/constant';
-import { renderIcon } from '@src/utils/renderIcon';
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/dashboard',
-    name: 'dashboard-layout',
-    redirect: '/dashboard',
     component: DashboardLayout,
     meta: {
-      title: 'Dashboard',
-      icon: renderIcon(DashboardOutlined),
+      title: 'Home',
       permissions: ['dashboard menu'],
-      sort: 0
+      sort: 1
     },
     children: [
       {
@@ -21,7 +16,7 @@ const routes: RouteRecordRaw[] = [
         name: 'dashboard',
         meta: {
           title: 'Dashboard',
-          icon: renderIcon(DashboardOutlined),
+          icon: 'pi pi-fw pi-home',
           permissions: ['dashboard menu']
         },
         component: () => import('@src/views/dashboard/index.vue')

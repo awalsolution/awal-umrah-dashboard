@@ -6,22 +6,42 @@ import { PageEnum } from '@src/enums/pageEnum';
 export function generatorMenu(routerMap: Array<any>) {
   return filterRouter(routerMap).map((item) => {
     const isRoot = isRootRouter(item);
-    const info = isRoot ? item.children[0] : item;
-    const currentMenu = {
-      ...info,
-      ...info.meta,
-      label: info.meta?.title,
-      key: info.name,
-      icon: isRoot ? item.meta?.icon : info.meta?.icon
+    const info = isRoot ? item : item;
+    const currentMenu: any = {
+      label: item.meta?.title,
+      to: item.path,
+      icon: item.meta?.icon
     };
-    // Whether there is a submenu and process it recursively
+
+    // Recursively handle children, if they exist
     if (info.children && info.children.length > 0) {
-      // Recursion
-      currentMenu.children = generatorMenu(info.children);
+      currentMenu.items = generatorMenu(info.children);
     }
+
     return currentMenu;
   });
 }
+
+// export function generatorMenu(routerMap: Array<any>) {
+//   return filterRouter(routerMap).map((item) => {
+//     console.log(item);
+//     const isRoot = isRootRouter(item);
+//     const info = isRoot ? item : item;
+//     const currentMenu: any = {
+//       ...info,
+//       ...info.meta,
+//       label: item.meta?.title,
+//       key: item.path,
+//       icon: isRoot ? item.meta?.icon : info.meta?.icon
+//     };
+//     // Whether there is a submenu and process it recursively
+//     if (info.children && info.children.length > 0) {
+//       // Recursion
+//       currentMenu.items = generatorMenu(info.children);
+//     }
+//     return currentMenu;
+//   });
+// }
 
 /**
  * Determine the root route Router

@@ -12,7 +12,7 @@ export function useUserfilter() {
       users.value = [];
     } else {
       userLoading.value = true;
-      const response: any = await getRecordsApi('/user', { name: query });
+      const response: any = await getRecordsApi('/users', { name: query });
       users.value = response.data?.data;
       userLoading.value = false;
     }
@@ -20,7 +20,7 @@ export function useUserfilter() {
 
   async function getUsers() {
     userLoading.value = true;
-    const response: any = await getRecordsApi('/user');
+    const response: any = await getRecordsApi('/users');
     users.value = response.data?.data;
     userLoading.value = false;
   }

@@ -12,7 +12,7 @@ export function useRolefilter() {
       roles.value = [];
     } else {
       roleLoading.value = true;
-      const response: any = await getRecordsApi('/role', {
+      const response: any = await getRecordsApi('/roles', {
         name: query
       });
       roles.value = response.data;
@@ -22,7 +22,7 @@ export function useRolefilter() {
 
   async function getRoles() {
     roleLoading.value = true;
-    const response: any = await getRecordsApi('/role');
+    const response: any = await getRecordsApi('/roles');
     roles.value = response.data;
     roleLoading.value = false;
   }

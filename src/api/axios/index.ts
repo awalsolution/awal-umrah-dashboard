@@ -47,10 +47,10 @@ class Request {
         if (response) {
           Request.handleCode(status as number, data as string);
         }
-        if (!window.navigator.onLine) {
-          router.replace('/404');
-          window['$message'].error('Network Error');
-        }
+        // if (!window.navigator.onLine) {
+        //   router.replace('/404');
+        //   window.toast('error', 'Error Message', 'Network Error');
+        // }
         return Promise.reject(data);
       }
     );
@@ -61,7 +61,7 @@ class Request {
     switch (code) {
       case ResponseStatusCode.UNAUTHORIZED:
         storage.remove(ACCESS_TOKEN);
-        window['$message'].error(msg.message);
+        window.toast('error', 'Error Message', msg.message);
         if (router.currentRoute.value.path !== '/login') {
           if (router.currentRoute.value.path !== '/') {
             router.replace({
@@ -76,37 +76,37 @@ class Request {
         }
         break;
       case ResponseStatusCode.FORBIDDEN:
-        window['$message'].error(msg.message);
+        window.toast('error', 'Error Message', msg.message);
         break;
       case ResponseStatusCode.INTERNAL_SERVER_ERROR:
-        window['$message'].error(msg.message);
+        window.toast('error', 'Error Message', msg.message);
         break;
       case ResponseStatusCode.BAD_GATEWAY:
-        window['$message'].error(msg.message);
+        window.toast('error', 'Error Message', msg.message);
         break;
       case ResponseStatusCode.GATEWAY_TIMEOUT:
-        window['$message'].error(msg.message);
+        window.toast('error', 'Error Message', msg.message);
         if (router.currentRoute.value.path !== '/login') {
           router.replace('/error/500');
         }
         break;
       case ResponseStatusCode.BAD_REQUEST:
-        window['$message'].error(msg.message);
+        window.toast('error', 'Error Message', msg.message);
         break;
       case ResponseStatusCode.NOT_FOUND:
-        window['$message'].error(msg.message);
+        window.toast('error', 'Error Message', msg.message);
         break;
       case ResponseStatusCode.METHOD_NOT_ALLOWED:
-        window['$message'].error(msg.message);
+        window.toast('error', 'Error Message', msg.message);
         break;
       case ResponseStatusCode.CONFLICT:
-        window['$message'].error(msg.message);
+        window.toast('error', 'Error Message', msg.message);
         break;
       case ResponseStatusCode.TOO_MANY_REQUESTS:
-        window['$message'].error(msg.message);
+        window.toast('error', 'Error Message', msg.message);
         break;
       default:
-        window['$message'].error(msg.message);
+        window.toast('error', 'Error Message', msg.message);
     }
   }
 

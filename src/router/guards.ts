@@ -1,12 +1,11 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { isNavigationFailure, type Router } from 'vue-router';
+import { type Router } from 'vue-router';
 import { useUserStore } from '@src/store/modules/user';
 import { useAsyncRouteStore } from '@src/store/modules/asyncRoute';
 import { PageEnum } from '@src/enums/pageEnum';
 import { ErrorPageRoute } from '@src/router/base';
 import { ACCESS_TOKEN } from '@src/utils/storage/variables';
 import { storage } from '@src/utils/storage';
-import { processRouteTag } from '@src/router/tabs';
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
 
@@ -16,9 +15,6 @@ export function createRouterGuards(router: Router) {
   const userStore = useUserStore();
   const asyncRouteStore = useAsyncRouteStore();
   router.beforeEach(async (to, from, next) => {
-    const Loading = window['$loading'] || null;
-    Loading && Loading.start();
-
     if (from.path === LOGIN_PATH && to.name === 'errorPage') {
       next(PageEnum.BASE_HOME);
       return;
@@ -75,15 +71,11 @@ export function createRouterGuards(router: Router) {
     const nextData = to.path === redirect ? { ...to, replace: true } : { path: redirect };
     asyncRouteStore.setDynamicRouteAdded(true);
     next(nextData);
-    Loading && Loading.finish();
   });
 
-  router.afterEach((to, _, failure) => {
+  router.afterEach((to) => {
     document.title = (to?.meta?.title as string) || document.title;
-    processRouteTag(to);
-    if (isNavigationFailure(failure)) {
-      //console.log('failed navigation', failure)
-    }
+
     const asyncRouteStore = useAsyncRouteStore();
     const keepAliveComponents = asyncRouteStore.keepAliveComponents;
     const currentComName: any = to.matched.find((item) => item.name == to.name)?.name;
@@ -98,8 +90,6 @@ export function createRouterGuards(router: Router) {
       }
     }
     asyncRouteStore.setKeepAliveComponents(keepAliveComponents);
-    const Loading = window['$loading'] || null;
-    Loading && Loading.finish();
   });
 
   router.onError((error) => {

@@ -8,7 +8,7 @@ export function usePagination(endpoint: any) {
   const emptyState = ref(false);
   const itemCount = ref(0);
   const pageSizes = ref([10, 20, 30, 40, 50, 100]);
-  const perPage = ref(20);
+  const perPage = ref(50);
   const getList = () => {
     getRecordsApi(endpoint, {
       ...searchParams.value,
@@ -24,9 +24,6 @@ export function usePagination(endpoint: any) {
     });
   };
   watch([page, perPage], (value, oldValue) => {
-    console.log('page ==>', page);
-    console.log('perPage ==>', perPage);
-    console.log('pageSizes ==>', pageSizes);
     page.value = value[1] !== oldValue[1] ? 1 : page.value;
     getList();
   });

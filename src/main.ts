@@ -3,25 +3,42 @@ import '@src/assets/styles/main.scss';
 import { createApp } from 'vue';
 import App from '@src/App.vue';
 import { faviconLoader } from '@src/constants/faviconLoader';
-import { naiveUILoader } from '@src/constants/naiveUILoader';
-import { setupNaive } from '@src/plugins/naive';
-import { setupDirectives } from '@src/plugins/directives';
-import { setupNaiveDiscreteApi } from '@src/plugins/naiveDiscreteApi';
+import { setupDirectives } from '@src/directives/directives';
 import { setupStore } from '@src/store';
 import { setupRouter } from '@src/router';
+
+//
+import Aura from '@primevue/themes/aura';
+import PrimeVue from 'primevue/config';
+import ConfirmationService from 'primevue/confirmationservice';
+import ToastService from 'primevue/toastservice';
+import StyleClass from 'primevue/styleclass';
+import FocusTrap from 'primevue/focustrap';
+import Tooltip from 'primevue/tooltip';
+import Ripple from 'primevue/ripple';
 
 const app = createApp(App);
 
 faviconLoader();
-naiveUILoader();
-
-setupNaive(app);
 
 setupStore(app);
-
-setupDirectives(app).then(r => {});
-
-setupNaiveDiscreteApi();
+//
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+    options: {
+      darkModeSelector: '.app-dark'
+    }
+  }
+});
+app.use(ToastService);
+app.use(ConfirmationService);
+app.directive('styleclass', StyleClass);
+app.directive('focustrap', FocusTrap);
+app.directive('tooltip', Tooltip);
+app.directive('ripple', Ripple);
+//
+setupDirectives(app).then(() => {});
 
 setupRouter(app);
 
