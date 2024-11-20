@@ -6,7 +6,6 @@ import { faviconLoader } from '@src/constants/faviconLoader';
 import { setupDirectives } from '@src/directives/directives';
 import { setupStore } from '@src/store';
 import { setupRouter } from '@src/router';
-
 //
 import Aura from '@primevue/themes/aura';
 import PrimeVue from 'primevue/config';
@@ -18,9 +17,7 @@ import Tooltip from 'primevue/tooltip';
 import Ripple from 'primevue/ripple';
 
 const app = createApp(App);
-
 faviconLoader();
-
 setupStore(app);
 //
 app.use(PrimeVue, {
@@ -39,7 +36,5 @@ app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);
 //
 setupDirectives(app).then(() => {});
-
 setupRouter(app);
-
 app.mount('#app');
