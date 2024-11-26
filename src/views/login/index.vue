@@ -88,7 +88,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { onMounted, onBeforeMount, ref, computed, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import InputText from 'primevue/inputtext';

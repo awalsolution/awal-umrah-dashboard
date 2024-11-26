@@ -13,6 +13,16 @@ const routes: RouteRecordRaw[] = [
     },
     children: [
       {
+        path: '/agencies',
+        name: 'agencies',
+        meta: {
+          title: 'Agencies',
+          icon: 'pi pi-building',
+          permissions: ['agencies menu']
+        },
+        component: () => import('@src/views/agencies/index.vue')
+      },
+      {
         path: '/booking',
         meta: {
           title: 'Bookings',
@@ -22,10 +32,10 @@ const routes: RouteRecordRaw[] = [
         children: [
           {
             path: '/booking',
-            name: 'booking',
+            name: 'booking_list',
             meta: {
               title: 'Booking List',
-              icon: 'pi pi-file-edit',
+              icon: 'pi pi-folder-open',
               permissions: ['booking menu']
             },
             component: () => import('@src/views/booking/index.vue')
@@ -35,6 +45,7 @@ const routes: RouteRecordRaw[] = [
             name: 'booking_add',
             meta: {
               title: 'Add booking',
+              icon: 'pi pi-file-edit',
               permissions: ['booking create']
             },
             component: () => import('@src/components/booking/AddBooking.vue')

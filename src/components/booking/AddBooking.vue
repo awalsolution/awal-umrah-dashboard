@@ -8,109 +8,144 @@
       >
         <b class="text-xl">Add Booking</b>
       </Divider>
-      <div class="grid grid-cols-3 gap-5">
-        <div class="w-full">
-          <label for="tenant_name" class="block font-semibold mb-1">Name</label>
-          <InputText
-            id="tenant_name"
-            v-model="data.tenant_name"
-            fluid
-            autocomplete="off"
-            placeholder="Name"
-          />
+      <Form
+        v-slot="$form: any"
+        :resolver="resolver"
+        :initialValues="formValues"
+        @submit="onFormSubmit"
+      >
+        <div class="grid grid-cols-3 gap-5">
+          <div class="flex flex-col gap-1">
+            <label for="agency_id" class="block font-semibold mb-1">Select Agency</label>
+            <Select
+              id="agency_id"
+              name="agency_id"
+              :options="agencies"
+              option-label="name"
+              option-value="id"
+              placeholder="Select Agency"
+              variant="filled"
+              fluid
+            />
+            <Message v-if="$form.agency_id?.invalid" severity="error" size="small" variant="simple">
+              {{ $form.agency_id.error?.message }}
+            </Message>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="booking_no" class="block font-semibold mb-1">Booking No</label>
+            <InputText
+              id="booking_no"
+              name="booking_no"
+              placeholder="Enter Booking No"
+              variant="filled"
+              fluid
+            />
+            <Message
+              v-if="$form.booking_no?.invalid"
+              severity="error"
+              size="small"
+              variant="simple"
+            >
+              {{ $form.booking_no.error?.message }}
+            </Message>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="group_head" class="block font-semibold mb-1">Group Head Name</label>
+            <InputText
+              id="group_head"
+              name="group_head"
+              placeholder="Enter Group Name"
+              variant="filled"
+              fluid
+            />
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="arrival_date" class="block font-semibold mb-1">Arrival Date</label>
+            <DatePicker
+              inputId="arrival_date"
+              name="arrival_date"
+              showTime
+              :showIcon="true"
+              iconDisplay="input"
+              placeholder="Select Arrival Date"
+              variant="filled"
+              fluid
+            />
+            <Message
+              v-if="$form.arrival_date?.invalid"
+              severity="error"
+              size="small"
+              variant="simple"
+            >
+              {{ $form.arrival_date.error?.message }}
+            </Message>
+          </div>
+          <div class="flex flex-col gap-1">
+            <label for="departure_date" class="block font-semibold mb-1">Departure Date</label>
+            <DatePicker
+              inputId="departure_date"
+              name="departure_date"
+              showTime
+              :showIcon="true"
+              iconDisplay="input"
+              placeholder="Select Departure Date"
+              variant="filled"
+              fluid
+            />
+          </div>
         </div>
-        <div class="w-full">
-          <label for="domain_name" class="block font-semibold mb-1">Domain Name</label>
-          <InputText
-            id="domain_name"
-            v-model.trim="data.domain_name"
-            :required="true"
-            :invalid="submitted && !data.domain_name"
-            fluid
-            placeholder="Domain Name"
-          />
-          <small v-if="submitted && !data.domain_name" class="text-red-500">
-            Domain Name is required.
-          </small>
+        <div class="flex justify-end">
+          <Button type="submit" severity="primary" label="Save" class="mt-5" />
         </div>
-        <div class="w-full">
-          <label for="email" class="block font-semibold mb-1">Email</label>
-          <InputText
-            id="email"
-            v-model.trim="data.email"
-            :required="true"
-            :invalid="submitted && !data.email"
-            fluid
-            placeholder="Email"
-          />
-          <small v-if="submitted && !data.email" class="text-red-500">Email is required.</small>
-        </div>
-        <div class="w-full">
-          <label for="phone_number" class="block font-semibold mb-1">Phone#</label>
-          <InputText
-            id="phone_number"
-            v-model="data.phone_number"
-            fluid
-            autocomplete="off"
-            placeholder="Phone#"
-          />
-        </div>
-        <div class="w-full">
-          <label for="plan_id" class="block font-bold mb-1">Select Plan</label>
-          <Select
-            id="plan_id"
-            v-model="data.plan_id"
-            :options="plans"
-            option-label="name"
-            option-value="id"
-            placeholder="Select Plan"
-            class="w-full"
-          />
-        </div>
-      </div>
-    </template>
-    <template #footer>
-      <div class="flex gap-4 mt-3 justify-end">
-        <Button label="Cancel" severity="danger" @click="handleCancel" />
-        <Button label="Save" @click="saveForm" />
-      </div>
+      </Form>
     </template>
   </Card>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { createRecordApi } from '@src/api/endpoints';
-import { usePlanfilter } from '@src/filters/plan';
-import InputText from 'primevue/inputtext';
-import Select from 'primevue/select';
-import Divider from 'primevue/divider';
-import Button from 'primevue/button';
-import Card from 'primevue/card';
+import { useAgenciesfilter } from '@src/filters/agencies';
+import { DatePicker, Card, Button, Divider, Select, InputText, Message } from 'primevue';
+import { Form, type FormSubmitEvent } from '@primevue/forms';
+import { zodResolver } from '@primevue/forms/resolvers/zod';
+import { z } from 'zod';
 
 const router = useRouter();
-const { plans, getPlans } = usePlanfilter();
-const data: Ref = ref({});
-const submitted: Ref = ref(false);
+const { agencies, getAgencies } = useAgenciesfilter();
+const formValues = ref({});
 
-const saveForm = () => {
-  submitted.value = true;
-  if (data?.value.domain_name?.trim() && data?.value.email?.trim()) {
-    createRecordApi('/tenants', data.value).then((res: any) => {
-      window.toast('success', 'Organization Information', res.message);
-      router.push({ name: 'organization_list' });
+const resolver = ref(
+  zodResolver(
+    z.object({
+      agency_id: z.number({ required_error: 'Agency is required!' }),
+      booking_no: z.string({ required_error: 'Booking No is required!' })
+      // group_head: z.string().optional(),
+      // arrival_date: z.date({ message: 'Arrival date' }),
+      // departure_date: z.date().optional()
+    })
+  )
+);
+
+const onFormSubmit = (e: FormSubmitEvent) => {
+  if (e.valid) {
+    createRecordApi('/bookings', e.values).then((res: any) => {
+      window.toast('success', 'Booking Information', res.message);
+      router.push({ name: 'booking_list' });
     });
-    data.value = {};
+  } else {
+    console.log(e);
+    e.reset();
   }
 };
 
 const handleCancel = () => {
-  router.push({ name: 'organization_list' });
+  router.push({ name: 'booking_list' });
 };
 
 onMounted(() => {
-  getPlans();
+  getAgencies();
 });
 </script>
 

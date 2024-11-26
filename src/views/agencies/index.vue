@@ -1,18 +1,19 @@
 <template>
   <div>
     <div class="flex items-center justify-between mb-5">
-      <h1 class="text-2xl font-bold">Booking List</h1>
+      <h1 class="text-2xl font-bold">Agencies List</h1>
       <Button
-        @click="router.push('/booking/add')"
+        @click="openAddDialog"
         severity="primary"
-        label="Add Booking"
+        label="Add Agency"
         icon="pi pi-plus"
-        v-permission="{ action: ['booking create'] }"
+        v-permission="{ action: ['agencies create'] }"
       />
     </div>
     <DataTable
       :value="list"
       stripedRows
+      scrollable
       dataKey="id"
       v-model:filters="filters"
       filterDisplay="row"
@@ -20,18 +21,18 @@
       :rows="20"
       :rowsPerPageOptions="pageSizes"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks  NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-      :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Bookings`"
+      :currentPageReportTemplate="`Showing ${page} to ${perPage} of ${itemCount} Agencies`"
     >
-      <template #empty> No Bookings found. </template>
+      <template #empty> No Agencies found. </template>
       <Column
-        field="booking_no"
-        header="Booking No"
+        field="name"
+        header="Name"
         :show-filter-menu="false"
         :showClearButton="false"
         class="whitespace-nowrap min-w-48"
       >
         <template #body="{ data }">
-          {{ data.booking_no }}
+          {{ data.name }}
         </template>
         <template #filter="{ filterModel, filterCallback }">
           <InputText
@@ -43,24 +44,29 @@
           />
         </template>
       </Column>
-      <Column field="agency" header="Agency Name" class="whitespace-nowrap">
+      <Column field="phone" header="Phone" class="whitespace-nowrap">
         <template #body="{ data }">
-          {{ data.agency.name }}
+          {{ data.phone }}
         </template>
       </Column>
-      <Column field="group_head" header="Group Head" class="whitespace-nowrap">
+      <Column field="address" header="Address" class="whitespace-nowrap">
         <template #body="{ data }">
-          {{ data.group_head }}
+          {{ data.address }}
         </template>
       </Column>
-      <Column field="arrival_date" header="Arrival Date" class="whitespace-nowrap">
+      <Column field="city" header="City" class="whitespace-nowrap">
         <template #body="{ data }">
-          {{ data.arrival_date }}
+          {{ data.city }}
         </template>
       </Column>
-      <Column field="departure_date" header="Departure Date" class="whitespace-nowrap">
+      <Column field="state" header="State" class="whitespace-nowrap">
         <template #body="{ data }">
-          {{ data.departure_date }}
+          {{ data.state }}
+        </template>
+      </Column>
+      <Column field="country" header="Country" class="whitespace-nowrap">
+        <template #body="{ data }">
+          {{ data.country }}
         </template>
       </Column>
       <Column field="status" header="status">
@@ -82,8 +88,8 @@
       </Column>
       <Column
         header="Actions"
+        v-permission="{ action: ['agencies update', 'agencies delete'] }"
         class="whitespace-nowrap"
-        v-permission="{ action: ['booking update', 'booking delete'] }"
       >
         <template #body="{ data }">
           <Button
@@ -92,9 +98,9 @@
             outlined
             rounded
             class="mr-2"
-            @click="router.push(`/booking/edit/${data.id}`)"
+            @click="openEditDialog(data)"
             v-permission="{
-              action: ['booking update']
+              action: ['agencies update']
             }"
           />
           <Button
@@ -105,13 +111,49 @@
             severity="danger"
             @click="openDeleteDialog(data)"
             v-permission="{
-              action: ['booking delete']
+              action: ['agencies delete']
             }"
           />
         </template>
       </Column>
     </DataTable>
-
+    <!-- add edit form -->
+    <Dialog v-model:visible="addDialog" class="w-1/2" :header="dialogHeader" :modal="true">
+      <div class="grid grid-cols-3 gap-5">
+        <div>
+          <label for="name" class="block font-bold mb-3">Name</label>
+          <InputText id="name" v-model="data.name" fluid placeholder="Enter Name" />
+        </div>
+        <div>
+          <label for="phone" class="block font-bold mb-3">Phone Number</label>
+          <InputText id="phone" v-model="data.phone" fluid placeholder="Enter Phone Number" />
+        </div>
+        <div>
+          <label for="address" class="block font-bold mb-3">Address</label>
+          <InputText id="address" v-model="data.address" fluid placeholder="Enter Address" />
+        </div>
+        <div>
+          <label for="city" class="block font-bold mb-3">City</label>
+          <InputText id="city" v-model="data.city" fluid placeholder="Enter City Name" />
+        </div>
+        <div>
+          <label for="state" class="block font-bold mb-3">State</label>
+          <InputText id="state" v-model="data.state" fluid placeholder="Enter State Name" />
+        </div>
+        <div>
+          <label for="country" class="block font-bold mb-3">Country</label>
+          <InputText id="country" v-model="data.country" fluid placeholder="Enter Country Name" />
+        </div>
+        <div>
+          <label for="status" class="block font-bold mb-3">Status</label>
+          <ToggleSwitch id="status" v-model="data.status" :true-value="1" :false-value="0" />
+        </div>
+      </div>
+      <template #footer>
+        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
+        <Button label="Save" icon="pi pi-check" @click="saveForm" />
+      </template>
+    </Dialog>
     <!-- delete form  -->
     <Dialog v-model:visible="deleteDialog" class="w-1/3" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
@@ -130,33 +172,34 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, type Ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
 import { FilterMatchMode } from '@primevue/core/api';
+import ToggleSwitch from 'primevue/toggleswitch';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import Tag from 'primevue/tag';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import { deleteRecordApi } from '@src/api/endpoints';
+import { createRecordApi, deleteRecordApi, updateRecordApi } from '@src/api/endpoints';
 import { usePagination } from '@src/hooks/pagination/usePagination';
 import { debounce } from 'lodash-es';
 
-const router = useRouter();
 const data: Ref = ref({});
+const addDialog: Ref = ref(false);
 const deleteDialog: Ref = ref(false);
+const dialogHeader: Ref = ref();
 const deleteId: Ref = ref();
 
 const { getList, list, page, pageSizes, itemCount, perPage, searchParams }: any =
-  usePagination('/bookings');
+  usePagination('/agencies');
 
 const filters = ref({
-  booking_no: { value: null, matchMode: FilterMatchMode.CONTAINS }
+  name: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
 const fetchList = () => {
   searchParams.value = {
-    booking_no: filters.value.booking_no.value || ''
+    name: filters.value.name.value || ''
   };
   getList(searchParams.value);
 };
@@ -170,14 +213,48 @@ onMounted(() => {
   fetchList();
 });
 
+function openAddDialog() {
+  dialogHeader.value = 'Add Agency';
+  data.value = {};
+
+  addDialog.value = true;
+}
+
+function openEditDialog(item: any) {
+  dialogHeader.value = 'Edit Agency';
+  data.value = item;
+
+  addDialog.value = true;
+}
+
 function openDeleteDialog(item: any) {
   deleteId.value = item.id;
   data.value = item;
   deleteDialog.value = true;
 }
 
+function hideDialog() {
+  addDialog.value = false;
+}
+
+const saveForm = () => {
+  if (data?.value.id) {
+    updateRecordApi(`/agencies/${data.value.id}`, data.value).then((res: any) => {
+      window.toast('success', 'Success Message', res.message);
+      getList();
+    });
+  } else {
+    createRecordApi('/agencies', data.value).then((res: any) => {
+      window.toast('success', 'Success Message', res.message);
+      getList();
+    });
+  }
+  addDialog.value = false;
+  data.value = {};
+};
+
 function handleDelete() {
-  deleteRecordApi(`/bookings/${deleteId.value}`)
+  deleteRecordApi(`/agencies/${deleteId.value}`)
     .then((res: any) => {
       window.toast('success', 'Success Message', res.message);
       getList();
